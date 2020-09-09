@@ -1,0 +1,7 @@
+{% extends "registration/base.html"%}
+{% load static %}
+
+{% block body %}
+    <h1>La sesión se cerro con éxito.</h1>
+    <a href="{% url 'orders:main_page' %}">Ir al Inicio</a>
+{% endblock%}

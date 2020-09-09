@@ -20,34 +20,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'j2b$-ouog*fp$6%)o5u#vzz-7z9xjsby*-@r=#)+%3+g8(_$d('
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+# Import development settings or production settings
+if DEBUG:
+    from .settings_dev import * 
+else:
+    from .settings_production import *
 
 ROOT_URLCONF = 'pizzaclub.urls'
 
@@ -68,18 +50,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pizzaclub.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -113,8 +83,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+# User Model Settings
+AUTH_USER_MODEL = 'registration.User'
+PASSWORD_RESET_TIMEOUT = 3600
+MAX_DNI_LENGTH = 9
+MIN_DNI_LENGTH = 8
+MAX_CUIL_LENGTH = 12
+MIN_CUIL_LENGTH = 11
+MIN_PHONE_LENGTH = 7
+MAX_PHONE_LENGTH = 11
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = '/static/'

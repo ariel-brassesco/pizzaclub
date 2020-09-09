@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Font Awesome for icons-->
+        <script src="https://kit.fontawesome.com/da32bd2801.js" crossorigin="anonymous"></script>
+
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <!-- CSS -->
+        {%comment%}
+        <link rel="stylesheet" type="text/css" href="{% static '/registration/css/index.css' %}">
+        {%endcomment%}
+        {% block css %}
+        {% endblock %}
+        
+        
+        <!-- External js Files -->
+        {% block externaljs %}
+        {% endblock %}
+        <!-- Title of page -->
+        {%comment%}
+        <title>{{ PLACE.name }}</title>
+        <link rel="shortcut icon" href='../../..{{ PLACE.image.url }}' type="image/x-icon">
+        {%endcomment%}
+    </head>
+    <body>
+        {% block body %}
+        {% endblock %}
+
+        {% block javascript %}
+        {% endblock %}
+    </body>
+</html>
