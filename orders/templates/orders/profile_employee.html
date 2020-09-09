@@ -1,0 +1,8 @@
+{% extends 'orders/base.html' %}
+
+{% load static%}
+
+{% block body %}
+<h1>Hola {{usuario}} </h1>
+<a href="{% url 'registration:logout'%}">Cerrar Sesión</a>
+{% endblock%}

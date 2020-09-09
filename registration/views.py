@@ -36,6 +36,7 @@ def login_view(request):
                 
                 return JsonResponse({
                         'success': True,
+                        'message': 'Iniciando Sesión.',
                         'redirect': redirect
                     })
             # raise User.DoesNotExist exception if autenticate return None
@@ -43,7 +44,8 @@ def login_view(request):
         except User.DoesNotExist:
             return JsonResponse({
                 'success': False,
-                'error': 'E-mail o Contraseña Incorrectos.'
+                'message': 'E-mail o Contraseña Incorrectos.',
+                'error': 'credentials'
                 })
     return render(request, "registration/login_view.html")
 

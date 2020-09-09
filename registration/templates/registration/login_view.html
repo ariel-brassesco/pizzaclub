@@ -2,24 +2,25 @@
 {% load static %}
 
 {% block externaljs%}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 {% endblock %}
 
 {% block body %}
 
 <div>
+  <p id="login-notification"></p>
   <form id="login-form" action="{% url 'registration:login' %}" method='post'>
     {% csrf_token %}
     <div class="form-group">
       <label for="email">E-mail</label>
-      <input type="text" class="form-control" id="email" name="email">
+      <input type="text" class="form-control" id="email" name="email" required>
     </div>
     <div class="form-group">
       <label for="password">Contraseña</label>
-      <input type="password" class="form-control" id="password" name="password">
+      <input type="password" class="form-control" id="password" name="password" required>
     </div>
     <div class="form-submit">
-      <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+      <button id="login-btn-submit" type="submit" class="btn btn-primary">Iniciar Sesión</button>
       {%comment%}
       <small><a href="{% url 'registration:password_reset' %}">Olvido la contraseña?</a></small>
       {%endcomment%}

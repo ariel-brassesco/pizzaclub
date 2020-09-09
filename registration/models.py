@@ -9,6 +9,11 @@ from pizzaclub.settings import MAX_PHONE_LENGTH, MIN_PHONE_LENGTH
 import secrets
 import datetime
 # Create your models here.
+class Address(models.Model):
+    address = models.CharField(max_length=100, unique=True)
+    lat = models.DecimalField(max_digits=9, decimal_places=6, default=0)
+    long = models.DecimalField(max_digits=9, decimal_places=6, default=0)
+
 class User(AbstractUser):
     '''
         Extend the User Django built in model.
@@ -81,7 +86,7 @@ class Employee(models.Model):
             MaxLengthValidator(MAX_DNI_LENGTH),
             RegexValidator(regex=r'^\d+$')
         ])
-    address = models.CharField(max_length=100, null=True, blank=True)
+    address = models.ManyToManyField(Address)
 
     def __str__(self):
         return self.user.get_full_name()
@@ -96,5 +101,15 @@ class Employee(models.Model):
         super(Employee, self).save(*args, **kwargs)
 
 class Client(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=30)
+    phone = models.CharField(
+        max_length=MAX_PHONE_LENGTH,
+        null=True,
+        blank=True,
+        validators=[
+            MinLengthValidator(MIN_DNI_LENGTH),
+            MaxLengthValidator(MAX_DNI_LENGTH),
+            RegexValidator(regex=r'^\d+$')
+        ])
+    address = models.ManyToManyField(Address)
 

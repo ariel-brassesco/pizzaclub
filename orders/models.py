@@ -3,7 +3,7 @@ from django.core.validators import MinLengthValidator, MaxLengthValidator, Regex
 
 from pizzaclub.settings import MAX_CUIL_LENGTH, MIN_CUIL_LENGTH
 from pizzaclub.settings import MAX_PHONE_LENGTH, MIN_PHONE_LENGTH
-
+from registration.models import Employee, Client, Address
 #from gdstorage.storage import GoogleDriveStorage
 
 # Define Google Drive Storage
@@ -104,3 +104,59 @@ class Place(models.Model):
 
     def __str__(self):
         return self.name
+
+class Shipping(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('shipping', 'shipping'),
+        ('open', 'open'),
+        ('cancel', 'cancel'),
+        ('pending', 'pending'),
+        ('processing', 'processing'),
+        ('delivering', 'delivering'),
+        ('ready', 'ready')
+        ]
+    
+    ORDER_TYPES = [
+        ('whatsapp', 'whatsapp'),
+        ('phone', 'phone'),
+        ('local', 'local'),
+        ('pedidos ya', 'pedidos ya')
+    ]
+
+    order = models.AutoField(primary_key=True)
+    order_type = models.CharField(max_length=10, choices=ORDER_TYPES)
+    date = models.DateTimeField(auto_now_add=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    table = models.PositiveSmallIntegerField(null=True)
+    shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, null=True)
+    #is_shipping = models.BooleanField(default=False)
+    comment = models.TextField(default='', null=True, blank=True)
+    total = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return str(self.order_id)
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.CharField(max_length=100)
+    quantity = models.PositiveIntegerField(default=1)
+    unitary_price = models.FloatField(default=0.0)
+    unitary_cost = models.FloatField(default=0.0)
+    total = models.FloatField(default=0.0)
+    total_cost = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"#{self.id}"
+
+    def save(self, *args, **kwargs):
+        self.total = self.quantity*self.unitary_price
+        self.total_cost = self.quantity*self.unitary_cost
+        super(OrderItem, self).save(*args, **kwargs)
+
