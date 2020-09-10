@@ -7,6 +7,7 @@ ALLOWED_HOSTS = ['pizzaclub.herokuapp.com']
 
 INSTALLED_APPS = [
     'registration.apps.RegistrationConfig',
+    'frontend.apps.FrontendConfig',
     'orders.apps.OrdersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -15,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'rest_framework',
     'gdstorage'
 ]
 
