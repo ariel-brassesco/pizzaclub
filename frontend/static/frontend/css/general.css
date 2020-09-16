@@ -1,0 +1,29 @@
+:root {
+    --primary-color: hsl(0, 0%, 4%);
+    --secondary-color: hsl(48, 100%, 67%);
+
+    --header-background: #ccc;
+    --header-color: #222;
+    --header-font-size: 12px;
+    --header-owner-size: 1.2em;
+
+    --type-title-background: #ccc;
+    --type-title-size: 1.1em;
+
+}
+
+#app {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("/static/frontend/images/background.png");
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-origin: border-box;
+}
+
+.back-btn {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: var(--primary-color);
+}

@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
-/*import Showcase from '../containers/Showcase';
-import NavFilter from '../containers/NavFilter';
-import Breadcrum from '../containers/Breadcrum';
-import Cart from '../containers/Cart';
 import {
-    WhatsappContact,
-    BannerInfo
+    Logo,
+    ButtonLink
 } from '../components/Common';
 
-import {URL_API_PRODUCTS, URL_API_CATEGORIES} from '../App';
-*/
 class MainPage extends Component {
     render() {
+        const LOGO_IMAGE = document.getElementById('app').dataset.logo;
         return (
             <div className='mainpage'>
-                {/*<Breadcrum />
-                <Cart />
-                <NavFilter url={URL_API_CATEGORIES} />
-                <Showcase url={URL_API_PRODUCTS} />
-                <BannerInfo />
-                <WhatsappContact />*/}
-                <h1>The Pizza Club</h1>
+                <figure className='image is-128x128'>
+                    <Logo className="" image={LOGO_IMAGE}/>
+                </figure>
+                <div className='main-menu'>
+                    <ButtonLink className='button is-warning is-medium is-active main-option' path='/delivery'>
+                        <span className="icon main-option--icon">
+                            <i className="fas fa-motorcycle"></i>
+                        </span>
+                        <span className="main-option--text">delivery</span>
+                    </ButtonLink>
+                    <ButtonLink className='button is-warning is-medium is-active main-option' path='/takeaway'>
+                        <span className="icon main-option--icon">
+                            <i className="fas fa-store"></i>
+                        </span>
+                        <span className="main-option--text">takeaway</span>
+                    </ButtonLink>
+                    <ButtonLink className='button is-warning is-medium is-active main-option' path='/menu'>
+                        <span className="icon main-option--icon">
+                            <i className="fas fa-book-open"></i>
+                        </span>
+                        <span className="main-option--text">menu</span>
+                    </ButtonLink>
+                </div> 
             </div>
         );
     }

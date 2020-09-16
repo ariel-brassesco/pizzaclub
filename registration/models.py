@@ -11,8 +11,12 @@ import datetime
 # Create your models here.
 class Address(models.Model):
     address = models.CharField(max_length=100, unique=True)
-    lat = models.DecimalField(max_digits=9, decimal_places=6, default=0)
-    long = models.DecimalField(max_digits=9, decimal_places=6, default=0)
+    lat = models.DecimalField(max_digits=9, decimal_places=7, default=0)
+    lon= models.DecimalField(max_digits=9, decimal_places=7, default=0)
+    elev = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+
+    class Meta:
+        verbose_name_plural = "Address"
 
 class User(AbstractUser):
     '''

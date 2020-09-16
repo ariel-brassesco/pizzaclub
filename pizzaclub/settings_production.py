@@ -44,11 +44,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 # Google Drive Storage Settings
-#GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = None
-#GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS = os.getenv('GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS')
-#GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = 'pizzaclub/media'
-
-
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = None
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS = os.getenv('GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS')
+GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = 'pizzaclub/media'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -82,3 +80,18 @@ SESSION_SAVE_EVERY_REQUEST = True # For session dictionary modifications between
 #EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # During development only
+
+# Global settings for Django REST Framework
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ]
+}

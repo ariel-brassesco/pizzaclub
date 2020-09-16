@@ -1,0 +1,44 @@
+.mainpage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    width: 90vw;
+    justify-content: space-evenly;
+}
+
+.main-option {
+    display: inline-flex;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin: 10px 0;
+    width: 100%;
+    justify-content: center;
+    align-items: stretch;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.main-option.is-active:active {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.main-option--icon {
+    align-self: flex-end;
+    margin-right: 10px;
+}
+
+.main-option--text {
+    align-self: flex-start;
+    width: 50%;
+}

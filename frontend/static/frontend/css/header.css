@@ -1,0 +1,16 @@
+.header-place {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--header-background);
+    color: var(--header-color);
+    font-size: var(--header-font-size);
+}
+
+.header-owner-title {
+    font-size: var(--header-owner-size);
+    font-weight: bold;
+    text-transform: capitalize;
+}

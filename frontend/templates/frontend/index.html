@@ -31,8 +31,17 @@
         <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Chewy&family=Dancing+Script:wght@700&family=Josefin+Sans:wght@200;300;400;500;700&family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Roboto:ital,wght@0,300;0,400;0,900;1,300;1,400;1,900&display=swap" rel="stylesheet">
         {% endcomment %}
         
+        <!-- CSS External -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="{% static 'orders/css/normalize.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/general.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/mainpage.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/menupage.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/header.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/menu.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/handlers.css' %}">
         
         <!-- External js Files -->
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -40,7 +49,7 @@
 
     </head>
     <body>
-        <div id="app">
+        <div id="app" data-logo={{OWNER.logo.url}}>
             <!-- React will load here -->
         </div>
 
