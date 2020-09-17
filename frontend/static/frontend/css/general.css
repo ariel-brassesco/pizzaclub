@@ -1,6 +1,7 @@
 :root {
     --primary-color: hsl(0, 0%, 4%);
-    --secondary-color: hsl(48, 100%, 67%);
+    /* --secondary-color: hsl(48, 100%, 67%); */
+    --secondary-color: hsl(0, 50%, 50%);
 
     --header-background: #ccc;
     --header-color: #222;

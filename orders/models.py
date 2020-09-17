@@ -211,8 +211,6 @@ class PriceList(models.Model):
 class Place(models.Model):
     name = models.CharField(max_length=30)
     email = models.EmailField()
-    logo = models.ImageField(upload_to='place')
-    #logo = models.ImageField(upload_to='owner/%Y/%m/%d', storage=gd_storage)
     instagram = models.URLField()
     whatsapp = models.URLField()
     cuil = models.CharField(

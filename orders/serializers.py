@@ -49,7 +49,6 @@ class OwnerSerializer(ExtraFieldsSerializer):
             'instagram',
             'whatsapp',
             'phone',
-            'logo',
             'address'
         )
 

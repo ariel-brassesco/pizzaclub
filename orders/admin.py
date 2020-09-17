@@ -8,7 +8,6 @@ class PlaceAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'email',
-        'logo',
         'created_at',
         'last_modified'
     )

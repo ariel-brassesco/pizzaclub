@@ -7,6 +7,8 @@ import Menu from '../containers/Menu';
 // Import Components
 import {GoToButton} from '../components/Common';
 import {PlaceHeader} from '../components/Place';
+// Import Routes
+import {INDEX} from "../routes";
 // Import Constants
 import {
     URL_API_OWNER,
@@ -30,13 +32,13 @@ class MenuPage extends Component {
                     storedProdKey={SHOWCASE_PRODUCT_KEY}
                     urlProd={URL_API_PRODUCTS}
                 />
-                <GoToButton path='/' className="back-btn">
+                <GoToButton path={INDEX} className="back-btn">
                     <span className="icon">
                         <i className="fas fa-angle-left"></i>
                     </span>
                 </GoToButton>
                 <PlaceHeader />
-                <Menu />
+                <Menu interactive={false}/>
             </div>)
     }
 }

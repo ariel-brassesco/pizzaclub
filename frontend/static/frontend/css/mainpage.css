@@ -7,6 +7,16 @@
     height: 100vh;
 }
 
+.main-logo {
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+}
+
+.main-logo img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
 .main-menu {
     display: flex;
     flex-direction: column;

@@ -9,9 +9,10 @@ class MainPage extends Component {
         const LOGO_IMAGE = document.getElementById('app').dataset.logo;
         return (
             <div className='mainpage'>
-                <figure className='image is-128x128'>
-                    <Logo className="" image={LOGO_IMAGE}/>
-                </figure>
+                <Logo className="image main-logo"
+                    classImg="is-rounded"
+                    image={LOGO_IMAGE}
+                    alt='The Pizza Club'/>
                 <div className='main-menu'>
                     <ButtonLink className='button is-warning is-medium is-active main-option' path='/delivery'>
                         <span className="icon main-option--icon">
@@ -29,7 +30,7 @@ class MainPage extends Component {
                         <span className="icon main-option--icon">
                             <i className="fas fa-book-open"></i>
                         </span>
-                        <span className="main-option--text">menu</span>
+                        <span className="main-option--text">menú</span>
                     </ButtonLink>
                 </div> 
             </div>

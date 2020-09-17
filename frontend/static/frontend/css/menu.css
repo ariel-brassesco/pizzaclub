@@ -31,3 +31,25 @@
     align-items: stretch;
 }
 
+.gotocart {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+    background-color: var(--header-background);
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 0.8em;
+    padding: 5px 2px;
+}
+
+.gotocart-btn {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    text-decoration: none;
+    width: 90%;
+}

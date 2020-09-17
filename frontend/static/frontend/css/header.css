@@ -4,9 +4,16 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    background-color: var(--header-background);
+    margin-bottom: 20px;
+    /*background-color: var(--header-background);*/
+    background-color: var(--secondary-color);
     color: var(--header-color);
     font-size: var(--header-font-size);
+}
+
+.header-logo {
+    width: 256px;
+    margin: -60px;
 }
 
 .header-owner-title {

@@ -11,12 +11,13 @@ export class TypeProduct extends Component {
     }
 
     render() {
-        const {name, id, products, subtype} = this.props;
+        // const {name, id, products, subtype} = this.props;
+        const {name, id, children, subtype} = this.props;
         const {show} = this.state;
 
-        const prod = (subtype.length > 0)
-                        ?subtype.map(s => <SubTypeProduct key={s.id} {...s} products={products}/>)
-                        :products.map(p => <Product key={p.id} {...p} />)
+        // const prod = (subtype.length > 0)
+        //                 ?subtype.map(s => <SubTypeProduct key={s.id} {...s} products={products}/>)
+        //                 :products.map(p => <Product key={p.id} {...p} />)
         return (
             <div className="product-type" data-id={id}>
                 <div className="product-type-title" 
@@ -33,7 +34,8 @@ export class TypeProduct extends Component {
                     </span>
                 </div>
                 <div className={(show)?'product-shower':'inactive'}>
-                    {prod}
+                    {/* {prod} */}
+                    {children}
                 </div>
             </div>
         );
@@ -51,14 +53,20 @@ export const SubTypeProduct = (props) => {
     );
 }
 
-export const Product = (props) => {
-    const {id, name, size, presentation, prices} = props;
-    return (
-        <div data-id={id}>
-            {name}
-            {size.map(s => s.name)}
-            {presentation.map(p => p.name)}
-            {prices.map(p => p.price)}
-        </div>
-    )
+export class Product extends Component{
+
+    render (){
+        const {id, name, size, presentation, prices} = this.props;
+        const {interactive} = this.props;
+        const {addToCart, removeToCart, updateQuantity} = this.props;
+        
+        return (
+            <div data-id={id}>
+                {name}
+                {size.map(s => s.name)}
+                {presentation.map(p => p.name)}
+                {prices.map(p => p.price)}
+            </div>
+        )
+    }
 }

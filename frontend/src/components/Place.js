@@ -13,6 +13,7 @@ import {Image, InfoItem} from '../components/Common';
 const Place = (props) => {
     const {data, pending, error, only_name} = props;
     let address = (data.address)?data.address.address:null;
+    const logo_src = document.getElementById('app').dataset.logo;
 
     if (error){
         return <div className="header-place header-error">
@@ -24,9 +25,9 @@ const Place = (props) => {
     if (pending) return <div className="header-place">Loading...</div>
     return (
         <div className='header-place'>
-            <Image className='image is256x256'
+            <Image className='image header-logo'
                     imgClass='is-rounded'
-                    src={data.logo}
+                    src={logo_src}
                     alt={data.name}
                 />
             <div className="header-owner-title">
@@ -39,11 +40,11 @@ const Place = (props) => {
                 </span> */}
             </div> 
             
-            {(!only_name)
-                ?<InfoItem iconClass="icon"
+            {(only_name)?null
+                :<InfoItem iconClass="icon"
                         iconContent="fas fa-map-marker-alt" 
-                        text={address} />
-                :null}
+                        text={`${address}, Santa Fe`} />
+            }
         </div>
     )
 }
