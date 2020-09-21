@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
+// Import Actions
+import {setDeliveryMode} from '../actions/actionsCart';
 // Import Containers
 import OwnerData from '../containers/Owner';
 import MenuData from '../containers/Showcase';
@@ -7,8 +10,6 @@ import Menu from '../containers/Menu';
 // Import Components
 import {GoToButton, GoToCart} from '../components/Common';
 import {PlaceHeader} from '../components/Place';
-// Import Routes
-import {INDEX, DELIVERY_CART} from "../routes";
 // Import Constants
 import {
     URL_API_OWNER,
@@ -19,8 +20,19 @@ import {
     SHOWCASE_TYPES_KEY
 } from '../constants';
 
-export default class DeliveryPage extends Component {
+class DeliveryPage extends Component {
+    componentWillUnmount(){
+        const {setDeliveryMode} = this.props;
+        setDeliveryMode(null);
+    }
+    
+    componentDidMount(){
+        const {mode, setDeliveryMode} = this.props;
+        setDeliveryMode(mode);
+    }
+
     render() {
+        const {goBack, goCart, interactive} = this.props;
         return (
             <div className='menupage'>
                 <OwnerData 
@@ -32,16 +44,24 @@ export default class DeliveryPage extends Component {
                     storedProdKey={SHOWCASE_PRODUCT_KEY}
                     urlProd={URL_API_PRODUCTS}
                 />
-                <GoToButton path={INDEX} className="back-btn">
+                <GoToButton path={goBack} className="back-btn">
                     <span className="icon">
                         <i className="fas fa-angle-left"></i>
                     </span>
                 </GoToButton>
                 <PlaceHeader />
-                <Menu interactive={true}/>
-                <GoToCart path={DELIVERY_CART}
+                <Menu interactive={interactive}/>
+                <GoToCart path={goCart}
                         className="gotocart"
                         classBtn='button is-primary is-small gotocart-btn'/>
             </div>)
     }
 }
+
+const mapDispatchToProps = dispatch =>{
+    return {
+        setDeliveryMode: (mode) => dispatch(setDeliveryMode(mode))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(DeliveryPage);

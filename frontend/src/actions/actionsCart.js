@@ -1,7 +1,9 @@
 export const ADD_CART_ITEM = 'ADD_CART_ITEM';
 export const REMOVE_CART_ITEM = 'REMOVE_CART_ITEM';
-export const UPDATE_QUANTITY_ITEM = 'UPDATE_QUANTITY_ITEM';
+export const PLUS_ONE_QUANTITY_ITEM = 'PLUS_ONE_QUANTITY_ITEM';
+export const MINUS_ONE_QUANTITY_ITEM = 'MINUS_ONE_QUANTITY_ITEM';
 export const EMPTY_CART = 'EMPTY_CART';
+export const SET_DELIVERY_MODE = 'SET_DELIVERY_MODE';
 
 function addCartItem(item){
     return {
@@ -17,11 +19,17 @@ function removeCartItem(id) {
     }
 }
 
-function updateQuantityItem(id, quantity){
+function plusOneQuantityItem(id){
     return {
-        type: UPDATE_QUANTITY_ITEM,
-        id,
-        quantity
+        type: PLUS_ONE_QUANTITY_ITEM,
+        id
+    }
+}
+
+function minusOneQuantityItem(id){
+    return {
+        type: MINUS_ONE_QUANTITY_ITEM,
+        id
     }
 }
 
@@ -31,9 +39,18 @@ function emptyCart(){
     }
 }
 
+function setDeliveryMode(mode){
+    return {
+        type: SET_DELIVERY_MODE,
+        mode
+    }
+}
+
 export {
     addCartItem,
     removeCartItem,
-    updateQuantityItem,
+    plusOneQuantityItem,
+    minusOneQuantityItem,
     emptyCart,
+    setDeliveryMode
 };

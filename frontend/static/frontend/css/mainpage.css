@@ -5,6 +5,11 @@
     align-items: center;
     width: 100vw;
     height: 100vh;
+    background-image: url("/static/frontend/images/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
+    background-origin: border-box;
 }
 
 .main-logo {

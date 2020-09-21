@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    #'gdstorage'
+    'gdstorage'
 ]
 
 MIDDLEWARE = [
@@ -48,6 +48,11 @@ STATIC_URL = '/static/'
 # Media files for FileFields and ImageFields
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
+
+# Google Drive Storage Settings
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = None
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS = os.getenv('GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS')
+GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = 'pizzaclub/media'
 
 # Global settings for Django REST Framework
 REST_FRAMEWORK = {

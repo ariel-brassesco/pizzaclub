@@ -6,7 +6,8 @@ import {
     addCartItem,
     removeCartItem,
     emptyCart,
-    updateQuantityItem
+    plusOneQuantityItem,
+    minusOneQuantityItem
 } from '../actions/actionsCart';
 //Import getters
 import {
@@ -15,34 +16,52 @@ import {
 } from '../reducers/showcaseReducer';
 import {getCartItems} from '../reducers/cartReducer';
 // Import Components
-import {EmptyCart} from "../components/Common";
+import {SearchProduct} from "../components/Common";
 import {TypeProduct, Product} from '../components/Products';
 
 
 class Menu extends Component {
+    state = {
+        inputSearch: ''
+    }
+
+    _handleChange = (e) => this.setState({inputSearch: e.target.value.trimStart()});
+
+    _resetInput = () => this.setState({inputSearch: ''});
+
+
     render() {
         const {types, products, interactive, cartItems} = this.props;
-        const {addToCart, removeToCart, updateQuantity, emptyCart} = this.props;
+        const {addToCart, removeToCart, plusQuantity, minusQuantity} = this.props;
+        const {inputSearch} = this.state;
         return (
             <div className='menu'>
-                {/* <EmptyCart empty={emptyCart} className='is-small'/> */}
+                <SearchProduct value={inputSearch}
+                                handleChange={this._handleChange}
+                                resetInput={this._resetInput}/>
                 {types.map(t => {
-                    let prod = products.filter( p => p.types == t.id);
+                    let prod = products.filter( p => 
+                                                p.types == t.id
+                                                && p.name.includes(inputSearch.trimEnd().toLowerCase()));
                     return (
                     <TypeProduct key={t.id}
                                 id={t.id}
-                                name={t.name}
-                                // products={prod} 
+                                name={t.name} 
                                 subtype={t.subtype}>
+                        {/* Pass the product as children */}
                         {prod.map(p => {
+                            //Pass the item of product if there is in the cart
+                            let item = cartItems.filter(i => i.product.id == p.id);
                             return (
                                 <Product key={p.id}
                                         interactive={interactive}
-                                        {...p}
+                                        data={p}
+                                        item={item}
                                         {...{
                                             addToCart,
                                             removeToCart,
-                                            updateQuantity,
+                                            plusQuantity,
+                                            minusQuantity
                                         }}/>
                                 )
                             })
@@ -67,7 +86,8 @@ const mapDispatchToProps = dispatch => {
     return {
         addToCart: (item)=> dispatch(addCartItem(item)),
         removeToCart: (id) => dispatch(removeCartItem(id)),
-        updateQuantity: (id,quantity) => dispatch(updateQuantityItem(id, quantity)),
+        plusQuantity: (id) => dispatch(plusOneQuantityItem(id)),
+        minusQuantity: (id) => dispatch(minusOneQuantityItem(id)),
         emptyCart: () => dispatch(emptyCart())
     }
 }

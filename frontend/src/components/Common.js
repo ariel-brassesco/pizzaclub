@@ -78,9 +78,9 @@ export const CartItem = (props) => {
 export const EmptyCart = ({empty, className}) => {
     return (
         <span className={`${className} icon`} onClick={empty}>
-            <span class="fa-stack">
-            <i class="fas fa-shopping-cart fa-stack-1x"></i>
-            <i class="fas fa-times fa-stack-2x has-text-danger"></i>
+            <span className="fa-stack">
+            <i className="fas fa-shopping-cart fa-stack-1x"></i>
+            <i className="fas fa-times fa-stack-2x has-text-danger"></i>
             </span>
         </span>
     );
@@ -91,11 +91,11 @@ const CheckoutCart = (props) => {
 
     return (
         <div className={className}>
-            {(items.length > 0)
-            ?[<span className="icon">
+            {(!items.length)
+            ?[<span key='1' className="icon">
                 <i className="fas fa-hand-point-up"></i>
             </span>,
-            <span>Seleccioná para armar tu pedido</span>]
+            <span key='2'>Seleccioná para armar tu pedido</span>]
             :<GoToButton path={path}
                     className={classBtn}>
                 <div>
@@ -118,3 +118,27 @@ const mapStateToPropsCart = state => {
 }
 
 export const GoToCart = connect(mapStateToPropsCart, null)(CheckoutCart);
+
+export const SearchProduct = (props) => {
+
+    const {value, handleChange, resetInput} = props;
+
+    return (
+        <div className="field has-addons">
+            <div className="control">
+                <input className="input is-warning"
+                        type="text"
+                        placeholder="Qué buscas?"
+                        onChange={handleChange}
+                        value={value} />
+            </div>
+            <div className="control">
+                <button className="button is-warning" onClick={resetInput}>
+                    <span className="icon is-medium">
+                        <i className="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+    );
+}
