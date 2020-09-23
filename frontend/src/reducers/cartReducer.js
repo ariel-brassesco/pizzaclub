@@ -1,4 +1,5 @@
 // import { v4 as uuidv4 } from 'uuid';
+import {SHIPPING_COST} from '../constants';
 import {
     ADD_CART_ITEM,
     REMOVE_CART_ITEM,
@@ -12,7 +13,8 @@ import {
 const INITIAL_CART_STATE = {
     items: [],
     total: 0.0,
-    delivery: null 
+    delivery: null,
+    shipping: 0.0
 };
 
 export function cartReducer(state = INITIAL_CART_STATE, action) {
@@ -75,7 +77,11 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
             return {...state, items: [], total: 0}
         
         case SET_DELIVERY_MODE:
-            return {...state, delivery: action.mode};
+            // Calculate the total
+            let shipping = (action.mode == 'delivery')?SHIPPING_COST:0;
+            total = state.items.reduce((c, a) => a.subtotal+c, 0);
+            total += shipping;
+            return {...state, delivery: action.mode, total, shipping};
 
         default: 
             return state;
@@ -85,3 +91,4 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
 export const getCartItems = state => state.cart.items;
 export const getTotalCart = state => state.cart.total;
 export const getDeliveryMode = state => state.cart.delivery;
+export const getShippingCost = state => state.cart.shipping;

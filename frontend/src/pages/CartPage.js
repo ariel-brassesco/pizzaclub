@@ -1,54 +1,79 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
 
 // Import Actions
-import {setDeliveryMode} from '../actions/actionsCart';
+// import {setDeliveryMode} from '../actions/actionsCart';
 // Import Containers
-import OwnerData from '../containers/Owner';
-import MenuData from '../containers/Showcase';
-import Menu from '../containers/Menu';
+// import MenuData from '../containers/Showcase';
+// import Menu from '../containers/Menu';
 // Import Components
-import {GoToButton, GoToCart} from '../components/Common';
+import {GoToButton} from '../components/Common';
+import {CartShower} from '../components/Cart';
 import {PlaceHeader} from '../components/Place';
-// Import Constants
+import {FormCart} from "../components/Forms";
+// Import getters
 import {
-    URL_API_OWNER,
-    URL_API_TYPES,
-    URL_API_PRODUCTS,
-    OWNER_KEY,
-    SHOWCASE_PRODUCT_KEY,
-    SHOWCASE_TYPES_KEY
-} from '../constants';
+    getCartItems,
+    getDeliveryMode,
+    getTotalCart
+} from '../reducers/cartReducer';
 
-class TakeawayPage extends Component {
+class CartPage extends Component {
     componentDidMount(){
-        this.props.setDeliveryMode();
+        // this.props.setDeliveryMode();
     }
 
     render() {
-        const {goBack, goCart, interactive} = this.props;
+        const {goBack, goConfirm, path} = this.props;
+        const {total, mode, items} = this.props;
+        console.log(goConfirm, path);
         return (
             <div className='menupage'>
-                <OwnerData 
-                    url={URL_API_OWNER}
-                    storedKey={OWNER_KEY}/>
-                <MenuData
-                    storedTypeKey={SHOWCASE_TYPES_KEY}
-                    urlType={URL_API_TYPES}
-                    storedProdKey={SHOWCASE_PRODUCT_KEY}
-                    urlProd={URL_API_PRODUCTS}
-                />
-                <GoToButton path={goBack} className="back-btn">
-                    <span className="icon">
-                        <i className="fas fa-angle-left"></i>
-                    </span>
-                </GoToButton>
-                <PlaceHeader />
-                <Menu interactive={interactive}/>
-                <GoToCart path={goCart}
-                        className="gotocart"
-                        classBtn='button is-primary is-small gotocart-btn'/>
+                <PlaceHeader only_name/>
+                <Switch>
+                    <Route exact path={path}>
+                        <CartShower items={items} total={total}/>
+                        <GoToButton path={path + goConfirm}
+                                className="">
+                            <span className="icon">
+                                <i className="fas fa-clipboard-check"></i>
+                                <span>Confirmar tu pedido!</span>
+                            </span>
+                        </GoToButton>
+                        <GoToButton path={goBack} className="">
+                            <span className="icon">
+                                <i className="fas fa-undo"></i>
+                                <span>Volver al menú</span>
+                            </span>
+                        </GoToButton>
+                    </Route>
+                    <Route exact path={path + goConfirm}>
+                        <FormCart />
+                        <GoToButton path={goConfirm}
+                                className="">
+                            <span className="icon">
+                                <i className="fab fa-whatsapp"></i>
+                                <span>Enviar ya por WhatsApp!</span>
+                            </span>
+                        </GoToButton>
+                        <GoToButton path={path} className="">
+                            <span className="icon">
+                                <i className="fas fa-undo"></i>
+                                <span>Volver al pedido</span>
+                            </span>
+                        </GoToButton>
+                    </Route>
+                </Switch>
             </div>)
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        items: getCartItems(state),
+        total: getTotalCart(state),
+        mode: getDeliveryMode(state)
     }
 }
 
@@ -58,4 +83,4 @@ const mapDispatchToProps = (dispatch, ownProps) =>{
     }
 }
 
-export default connect(null, mapDispatchToProps)(TakeawayPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CartPage);

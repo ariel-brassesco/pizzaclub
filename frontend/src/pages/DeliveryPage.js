@@ -8,7 +8,8 @@ import OwnerData from '../containers/Owner';
 import MenuData from '../containers/Showcase';
 import Menu from '../containers/Menu';
 // Import Components
-import {GoToButton, GoToCart} from '../components/Common';
+import {GoToButton} from '../components/Common';
+import {GoToCart} from '../components/Cart';
 import {PlaceHeader} from '../components/Place';
 // Import Constants
 import {

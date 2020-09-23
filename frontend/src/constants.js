@@ -10,3 +10,6 @@ export const SHOWCASE_TYPES_KEY = 'typesState';
 export const URL_API_OWNER = location.origin + '/owner/api/owner/';
 export const URL_API_TYPES = location.origin + '/owner/api/types/';
 export const URL_API_PRODUCTS = location.origin + '/owner/api/products/';
+
+//Define Shipping Cost
+export const SHIPPING_COST = 60;
