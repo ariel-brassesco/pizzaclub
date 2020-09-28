@@ -25,6 +25,7 @@ const INITIAL_CART_STATE = getData(CART_KEY)
     };
 
 export function cartReducer(state = INITIAL_CART_STATE, action) {
+<<<<<<< HEAD
     
     let new_state = {};
     switch(action.type) {
@@ -35,6 +36,29 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
             let items = (has_item === 0)
                         ?state.items.concat(action.item)
                         :state.items.map( item => (item.id === action.item.id)?action.item:item);
+=======
+    let total = 0
+    switch(action.type) {
+        case ADD_CART_ITEM:
+            //If the item is not in cart add it
+            let new_item = state.items.filter(item => item.id === action.item.id);
+
+            if (new_item.length === 0) {
+                new_item = {...action.item};
+                const items = state.items.concat(new_item);
+                total = items.reduce((c, a) => a.subtotal+c, 0);
+                return {...state, items, total}
+            }
+            //If the item already is in the cart, updated
+            let items = state.items.map( item => {
+                if(item.id === action.item.id) { 
+                    return {...action.item};
+                }
+                return item;
+            });
+            total = items.reduce((c, a) => a.subtotal+c, 0);
+            return {...state, items, total};
+>>>>>>> 67095d5a42b87e5e5798afa4665410564b518860
 
             new_state = {...state, items};
             break;

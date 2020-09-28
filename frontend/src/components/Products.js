@@ -367,12 +367,16 @@ export class Product extends Component{
         const {id, size, presentation} = data;
         const item = this.props.item;
         
+        let quantity = 0;
+        let widget;
+        let selected;
+        let item_selected;
         switch (this._getProductType(size, presentation)) {
 
             case 'ONLY_PRICE_VIEW':
                 let item_id = this._genId(id, size, presentation);
-                let quantity = (item.length)?item[0].quantity:0;
-                let widget = interactive && (quantity > 0);
+                quantity = (item.length)?item[0].quantity:0;
+                widget = interactive && (quantity > 0);
 
                 return <ProductOnlyPriceView data={data}
                                         item_id={item_id}
@@ -382,8 +386,8 @@ export class Product extends Component{
                                         increment={this._plusQuantity}
                                         decrement={this._minusQuantity}/>;
             case 'SIZE_PRICE_VIEW':
-                let {selected} = this.state;
-                let item_selected = item.filter(i => i.id == selected);
+                selected = this.state.selected;
+                item_selected = item.filter(i => i.id == selected);
                 quantity = (item_selected.length)?item_selected[0].quantity:0;
                 widget = interactive && selected;
                 return <ProductSizePriceView data={data}

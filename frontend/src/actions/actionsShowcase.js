@@ -47,7 +47,7 @@ function fetchTypesPending() {
 function fetchTypesSuccess(products) {
     return {
         type: FETCH_TYPES_SUCCESS,
-        types: types
+        types: {}
     }
 }
 

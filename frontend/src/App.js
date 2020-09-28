@@ -1,3 +1,4 @@
+import './styles/main.css';
 import React, { Component } from "react";
 import {Switch, Route, BrowserRouter, useRouteMatch} from 'react-router-dom';
 
