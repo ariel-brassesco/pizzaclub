@@ -39,10 +39,11 @@ function emptyCart(){
     }
 }
 
-function setDeliveryMode(mode){
+function setDeliveryMode(mode, shipping){
     return {
         type: SET_DELIVERY_MODE,
-        mode
+        mode,
+        shipping
     }
 }
 

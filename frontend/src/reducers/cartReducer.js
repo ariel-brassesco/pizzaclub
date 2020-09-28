@@ -1,5 +1,9 @@
 // import { v4 as uuidv4 } from 'uuid';
-import {SHIPPING_COST} from '../constants';
+// Import Constants
+import {CART_KEY} from '../constants';
+//Import Functions
+import {saveData, getData} from '../data';
+// Import Actions
 import {
     ADD_CART_ITEM,
     REMOVE_CART_ITEM,
@@ -10,40 +14,34 @@ import {
 } from '../actions/actionsCart' 
 
 
-const INITIAL_CART_STATE = {
-    items: [],
-    total: 0.0,
-    delivery: null,
-    shipping: 0.0
-};
+const INITIAL_CART_STATE = getData(CART_KEY)
+    ?getData(CART_KEY)
+    :{
+        items: [],
+        subtotal: 0,
+        total: 0.0,
+        delivery: null,
+        shipping: 0.0
+    };
 
 export function cartReducer(state = INITIAL_CART_STATE, action) {
+    
+    let new_state = {};
     switch(action.type) {
         case ADD_CART_ITEM:
-            //If the item is not in cart add it
-            let new_item = state.items.filter(item => item.id === action.item.id);
+            let has_item = state.items.filter(item => item.id === action.item.id).length;
+            // If the item is not in cart add it 
+            // else updated
+            let items = (has_item === 0)
+                        ?state.items.concat(action.item)
+                        :state.items.map( item => (item.id === action.item.id)?action.item:item);
 
-            if (new_item.length === 0) {
-                new_item = {...action.item};
-                const items = state.items.concat(new_item);
-                let total = items.reduce((c, a) => a.subtotal+c, 0);
-                return {...state, items, total}
-            }
-            //If the item already is in the cart, updated
-            let items = state.items.map( item => {
-                if(item.id === action.item.id) { 
-                    return {...action.item};
-                }
-                return item;
-            });
-            let total = items.reduce((c, a) => a.subtotal+c, 0);
-            return {...state, items, total};
-
+            new_state = {...state, items};
+            break;
         case REMOVE_CART_ITEM:
             items = state.items.filter(({ id }) => id !== action.id);
-            total = items.reduce((c, a) => a.subtotal+c, 0);
-            return {...state, items, total};
-        
+            new_state = {...state, items};
+            break;
         case PLUS_ONE_QUANTITY_ITEM:
             // Update the quantity and subtotal
             items = state.items.map(item => {
@@ -55,9 +53,8 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
                 return item;
             })
             // Calculate the total
-            total = items.reduce((c, a) => a.subtotal+c, 0);
-            return {...state, items, total};
-        
+            new_state = {...state, items};
+            break;
         case MINUS_ONE_QUANTITY_ITEM:
             // Update the quantity and subtotal
             items = state.items.map(item => {
@@ -70,25 +67,32 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
                 return item;
             })
             // Calculate the total
-            total = items.reduce((c, a) => a.subtotal+c, 0);
-            return {...state, items, total};
-        
+            new_state = {...state, items, subtotal};
+            break;
         case EMPTY_CART:
-            return {...state, items: [], total: 0}
-        
+            new_state = {...state, items: []};
+            break;
         case SET_DELIVERY_MODE:
-            // Calculate the total
-            let shipping = (action.mode == 'delivery')?SHIPPING_COST:0;
-            total = state.items.reduce((c, a) => a.subtotal+c, 0);
-            total += shipping;
-            return {...state, delivery: action.mode, total, shipping};
-
+            // Set the delivery mode and the shipping cost
+            let {shipping, mode} = action;
+            new_state = {...state, delivery: mode, shipping};
+            break;
         default: 
-            return state;
+            new_state = {...state};
+            break;
     }
+    // Calculate subtotal an total
+    let subtotal = new_state.items.reduce((c, a) => a.subtotal+c, 0);
+    let total = subtotal + new_state.shipping;
+    // Update the new_state
+    new_state = {...new_state, subtotal, total};
+    // Save the new_state in localStorage
+    saveData(CART_KEY, new_state);
+    return {...new_state};
 }
 
 export const getCartItems = state => state.cart.items;
+export const getSubtotalCart = state => state.cart.subtotal;
 export const getTotalCart = state => state.cart.total;
 export const getDeliveryMode = state => state.cart.delivery;
 export const getShippingCost = state => state.cart.shipping;

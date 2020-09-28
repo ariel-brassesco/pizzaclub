@@ -24,12 +24,12 @@ import {
 class DeliveryPage extends Component {
     componentWillUnmount(){
         const {setDeliveryMode} = this.props;
-        setDeliveryMode(null);
+        setDeliveryMode(null, 0.0);
     }
     
     componentDidMount(){
-        const {mode, setDeliveryMode} = this.props;
-        setDeliveryMode(mode);
+        const {mode, shipping, setDeliveryMode} = this.props;
+        setDeliveryMode(mode, shipping);
     }
 
     render() {
@@ -61,7 +61,7 @@ class DeliveryPage extends Component {
 
 const mapDispatchToProps = dispatch =>{
     return {
-        setDeliveryMode: (mode) => dispatch(setDeliveryMode(mode))
+        setDeliveryMode: (mode, shipping) => dispatch(setDeliveryMode(mode, shipping))
     }
 }
 

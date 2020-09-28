@@ -25,7 +25,7 @@ import  { SHOWCASE_PRODUCT_KEY, SHOWCASE_TYPES_KEY } from '../constants'
 */
 
 // Define Initial States for products and types update
-const INITIAL_PRODUCTS_STATE = getStoredState(SHOWCASE_PRODUCT_KEY);
+const INITIAL_PRODUCTS_STATE = getStoredState(SHOWCASE_PRODUCT_KEY)
 const INITIAL_TYPES_STATE = getStoredState(SHOWCASE_TYPES_KEY);
 
 // Define the state reducer of products, for update from localStorage

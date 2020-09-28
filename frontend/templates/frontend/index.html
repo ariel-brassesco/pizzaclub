@@ -45,11 +45,13 @@
         
         <!-- External js Files -->
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        {%comment%}
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-        
+        {%endcomment%}
     </head>
     <body>
-        <div id="app" data-logo="{% static 'frontend/images/logo.png' %}">
+        <div id="app" data-logo="{% static 'frontend/images/logo.png' %}"
+        data-delivery_cost="{{DELIVERY_COST}}">
             <!-- React will load here -->
         </div>
 

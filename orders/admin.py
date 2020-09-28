@@ -4,6 +4,13 @@ from django.contrib import admin
 from .models import TypeProduct, SubTypeProduct, PresentationProduct, SizeProduct, FeatureProduct
 from .models import Product, PriceList, Place, Shipping, Order, OrderItem
 
+class ShippingAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'cost',
+        'created_at',
+        'last_modified'
+    )
 class PlaceAdmin(admin.ModelAdmin):
     list_display = (
         'name',
@@ -46,6 +53,16 @@ class PriceAdmin(admin.ModelAdmin):
         'last_modified'
     )
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+        'order',
+        'order_type',
+        'date',
+        'delivery_mode',
+        'total',
+        'status'
+    )
+
 admin.site.register(TypeProduct, TypeAdmin)
 admin.site.register(SubTypeProduct)
 admin.site.register(SizeProduct)
@@ -54,7 +71,7 @@ admin.site.register(FeatureProduct)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(PriceList, PriceAdmin)
 admin.site.register(Place, PlaceAdmin)
-admin.site.register(Shipping)
-admin.site.register(Order)
+admin.site.register(Shipping, ShippingAdmin)
+admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
 

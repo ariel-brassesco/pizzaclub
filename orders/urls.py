@@ -10,4 +10,5 @@ urlpatterns = [
     path("api/products/", views.get_products),
     path("api/types/", views.get_types),
     path("api/owner/", views.get_owner),
+    path("api/orders/new_order/", views.make_order),
 ]

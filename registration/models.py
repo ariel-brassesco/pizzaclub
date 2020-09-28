@@ -106,10 +106,9 @@ class Employee(models.Model):
 
 class Client(models.Model):
     name = models.CharField(max_length=30)
+    email = models.EmailField()
     phone = models.CharField(
         max_length=MAX_PHONE_LENGTH,
-        null=True,
-        blank=True,
         validators=[
             MinLengthValidator(MIN_DNI_LENGTH),
             MaxLengthValidator(MAX_DNI_LENGTH),

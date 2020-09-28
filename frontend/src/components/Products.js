@@ -148,7 +148,7 @@ const ProductOnlyPriceView = (props) => {
 
 const ProductSizePriceView = (props) => {
     const {id, image, name, description, size, prices} = props.data;
-    const {item_id, widget, quantity, items} = props;
+    const {item_id, widget, interactive, quantity, items} = props;
     const {increment, decrement, select, genIds} = props;
     if (!prices[0]) return null;
 
@@ -166,7 +166,7 @@ const ProductSizePriceView = (props) => {
                             let price = prices.filter(p => p.size == s.id)[0];
                             let i_id = genIds(id, s.id, null);
                             let counter = items.filter(i => i.id == i_id)[0];
-                            counter = (counter)?counter.quantity:null;
+                            counter = (counter && interactive)?counter.quantity:null;
                             return (
                                 <div key={s.id}>
                                     <SizeTag className="product-size-tag" 
@@ -191,7 +191,7 @@ const ProductSizePriceView = (props) => {
 
 const ProductPresentationPriceView = (props) => {
     const {id, image, name, description, presentation, prices} = props.data;
-    const {item_id, widget, quantity, items} = props;
+    const {item_id, widget, interactive, quantity, items} = props;
     const {increment, decrement, select, genIds} = props;
     if (!prices[0]) return null;
 
@@ -210,7 +210,7 @@ const ProductPresentationPriceView = (props) => {
                         let price = prices.filter(p => p.presentation == pre.id)[0];
                         let i_id = genIds(id, null, pre.id);
                         let counter = items.filter(i => i.id == i_id)[0];
-                        counter = (counter)?counter.quantity:null;
+                        counter = (counter && interactive)?counter.quantity:null;
                         return(<div key={pre.id}>
                                 <PresentationTag className='product-presentation-tag'
                                                 presentation={pre.name}/>
@@ -232,7 +232,7 @@ const ProductPresentationPriceView = (props) => {
 
 const FullProductView = (props) => {
     const {id, image, name, description, presentation, size, prices} = props.data;
-    const {item_id, widget, quantity, items} = props;
+    const {item_id, widget, interactive, quantity, items} = props;
     const {increment, decrement, select, genIds} = props;
     if (!prices[0]) return null;
 
@@ -268,7 +268,7 @@ const FullProductView = (props) => {
                                 let price = prices.filter(p => p.size == s.id && p.presentation == pre.id)[0];
                                 let i_id = genIds(id, s.id, pre.id);
                                 let counter = items.filter(i => i.id == i_id)[0];
-                                counter = (counter)?counter.quantity:null;
+                                counter = (counter && interactive)?counter.quantity:null;
                                 return (
                                     <PriceTag key={s.id}
                                         className='product-price-tag'
@@ -293,10 +293,9 @@ const FullProductView = (props) => {
             </div>)
 }
 
-
 export class Product extends Component{
     state = {
-        show: false,
+        // show: false,
         selected: null
     }
 
@@ -390,6 +389,7 @@ export class Product extends Component{
                 return <ProductSizePriceView data={data}
                                             item_id={selected}
                                             items={item}
+                                            interactive={interactive}
                                             widget={widget}
                                             select={this._selectItem}
                                             genIds={this._genId}
@@ -404,6 +404,7 @@ export class Product extends Component{
                 return <ProductPresentationPriceView data={data}
                                             item_id={selected}
                                             items={item}
+                                            interactive={interactive}
                                             widget={widget}
                                             select={this._selectItem}
                                             genIds={this._genId}
@@ -419,6 +420,7 @@ export class Product extends Component{
                 return <FullProductView data={data}
                                         item_id={selected}
                                         items={item}
+                                        interactive={interactive}
                                         widget={widget}
                                         select={this._selectItem}
                                         genIds={this._genId}

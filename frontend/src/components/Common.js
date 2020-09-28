@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export const Logo = (props) => {
     const {image, alt, className, classImg} = props
@@ -77,3 +78,19 @@ export const SearchProduct = (props) => {
         </div>
     );
 }
+
+export const CustomField = ({field, form : {touched, errors }, ...props}) => (
+    <div className='field'>
+        {(props.label)?<label className="label">{props.label}</label>:null}
+        <div className='control'>
+            {(props.type == 'textarea')
+            ?<textarea type="text" className="input" {...field} {...props}></textarea>
+            :<input type="text" className="input" {...field} {...props} />}          
+        </div>
+        {
+            (touched[field.name] && errors[field.name])
+            ?<p className="help is-danger">{errors[field.name]}</p>
+            :null
+        }
+    </div>
+);

@@ -47,7 +47,7 @@ class ShowcaseData extends Component {
             updateTypeData(storedTypeKey);
         } else {
             if (!pendingType) fetchTypes();
-            console.log('Fetch Typess Data');
+            console.log('Fetch Types Data');
         }
     }
 

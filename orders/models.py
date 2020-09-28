@@ -238,9 +238,12 @@ class Place(models.Model):
         return self.name
 
 class Shipping(models.Model):
-    date = models.DateTimeField(auto_now_add=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+    cost = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return self.cost
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -260,30 +263,48 @@ class Order(models.Model):
         ('pedidos ya', 'pedidos ya')
     ]
 
+    DELIVERY_CHOICES = [
+        ('takeaway', 'takeaway'),
+        ('delivery', 'delivery'),
+        ('local', 'local')
+    ]
+
     order = models.AutoField(primary_key=True)
     order_type = models.CharField(max_length=10, choices=ORDER_TYPES)
     date = models.DateTimeField(auto_now_add=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True)
+    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
     table = models.PositiveSmallIntegerField(null=True)
-    shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, null=True)
+    delivery_mode = models.CharField(max_length=8, choices=DELIVERY_CHOICES)
+    shipping = models.ForeignKey(Shipping, on_delete=models.SET_NULL, null=True)
     #is_shipping = models.BooleanField(default=False)
-    comment = models.TextField(blank=True)
+    comment = models.TextField(blank=True, null=True)
     total = models.FloatField(default=0)
 
     def __str__(self):
-        return str(self.order_id)
+        return str(self.order)
+
+    def save(self, *args, **kwargs):
+        # Set the value of shipping
+        if self.delivery_mode == 'delivery': self.shipping = Shipping.objects.last()
+        # Calculate the total
+        total = 0
+        for item in self.items.select_related():
+            total += item.total
+        self.total = total 
+        super(Order, self).save(*args, **kwargs)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product = models.CharField(max_length=100)
+    #product = models.CharField(max_length=100)
+    product = models.ForeignKey(PriceList, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     unitary_price = models.FloatField(default=0)
-    unitary_cost = models.FloatField(default=0)
-    margen = models.FloatField(default=0)
+    #unitary_cost = models.FloatField(default=0)
+    #margen = models.FloatField(default=0)
     discount = models.FloatField(default=0.0)
-    total_cost = models.FloatField(default=0)
+    #total_cost = models.FloatField(default=0)
     total = models.FloatField(default=0)
     
     def __str__(self):
@@ -293,8 +314,9 @@ class OrderItem(models.Model):
         if self.discount > self.total: raise ValueError('Discount is greater than Total')
 
     def save(self, *args, **kwargs):
+        self.unitary_price = self.product.price
         self.total = self.quantity*self.unitary_price - self.discount
-        self.total_cost = self.quantity*self.unitary_cost
+        #self.total_cost = self.quantity*self.unitary_cost
         self.check_discount()
         super(OrderItem, self).save(*args, **kwargs)
  

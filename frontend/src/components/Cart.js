@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 //Import Components
 import {GoToButton} from "../components/Common";
 //Import Getters
-import {getTotalCart, getCartItems} from '../reducers/cartReducer';
+import {getCartItems, getSubtotalCart} from '../reducers/cartReducer';
+// Import Constants
+import {DELIVERY_MODE} from '../constants';
 
 
 export const CartItem = (props) => {
@@ -35,7 +37,7 @@ export const EmptyCart = ({empty, className}) => {
 }
 
 const CheckoutCart = (props) => {
-    const {items, total, path, className, classBtn} = props;
+    const {items, subtotal, path, className, classBtn} = props;
 
     return (
         <div className={className}>
@@ -52,7 +54,7 @@ const CheckoutCart = (props) => {
                     </span>
                     <span>Ver tu pedido!</span>
                 </div>
-                <span>{`$ ${total}`}</span>  
+                <span>{`$ ${subtotal}`}</span>  
             </GoToButton>}
         </div>
     )
@@ -61,20 +63,46 @@ const CheckoutCart = (props) => {
 const mapStateToPropsCart = state => {
     return {
         items: getCartItems(state),
-        total: getTotalCart(state)
+        subtotal: getSubtotalCart(state),
     }
 }
 
 export const GoToCart = connect(mapStateToPropsCart, null)(CheckoutCart);
 
-
-export function CartShower(props) {
-    const {items, total} = props;
+const ShippingItem = ({shipping}) => {
     return (
         <div>
-            {items.map(i => <CartItem key={i.id} {...i}/>)}
+            <span>Envío</span><span>{`$ ${shipping.toFixed(2)}`}</span>
+        </div>
+    )
+}
+
+export function CartShower(props) {
+    const {mode, shipping, items, subtotal, total} = props;
+    return (
+        <div>
+            {/* Show Cart Items */}
+            {items.map(i => {
+                const size = i.product.size.filter(s => s.id == i.size)[0];
+                const presentation = i.product.presentation.filter(p => p.id == i.presentation)[0];
+                return <CartItem key={i.id}
+                            {...i}
+                            size={(size)?size.name:null}
+                            presentation={(presentation)?presentation.name:null}/>
+                })
+            }
+            {/* Show Subtotal and Shipping Cost if there is */}
+            {
+                (mode !== DELIVERY_MODE)
+                ?null
+                :[<div key="subtotal">
+                    <span>Subtotal</span><span>{`$ ${subtotal.toFixed(2)}`}</span>
+                </div>,
+                <ShippingItem key="shipping" shipping={shipping}/>]
+            }
+            {/* Show total */}
             <div>
-                <span>total</span><span>{`$ ${total}`}</span>
+                <span>total</span><span>{`$ ${total.toFixed(2)}`}</span>
             </div>
         </div>
     );

@@ -33,6 +33,7 @@ export function getStoredState(key, time=DAY_IN_MS) {
     })
     // Else return the state stored
     return {
+        ...storedState,
         update: true,
         last_modified
     };
