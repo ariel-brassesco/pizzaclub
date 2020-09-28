@@ -13,7 +13,6 @@ import {Image, InfoItem} from '../components/Common';
 const Place = (props) => {
     const {data, pending, error, only_name} = props;
     let address = (data.address)?data.address.address:null;
-    const logo_src = document.getElementById('app').dataset.logo;
 
     if (error){
         return <div className="header-place header-error">
@@ -27,7 +26,7 @@ const Place = (props) => {
         <div className='header-place'>
             <Image className='image header-logo'
                     imgClass='is-rounded'
-                    src={logo_src}
+                    src='/images/logo.png'
                     alt={data.name}
                 />
             <div className="header-owner-title">

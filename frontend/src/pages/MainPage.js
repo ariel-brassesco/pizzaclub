@@ -6,12 +6,11 @@ import {
 
 class MainPage extends Component {
     render() {
-        const LOGO_IMAGE = document.getElementById('app').dataset.logo;
         return (
             <div className='mainpage'>
                 <Logo className="image main-logo"
                     classImg="is-rounded"
-                    image={LOGO_IMAGE}
+                    image='/images/logo.png'
                     alt='The Pizza Club'/>
                 <div className='main-menu'>
                     <ButtonLink className='button is-warning is-medium is-active main-option' path='/delivery'>
