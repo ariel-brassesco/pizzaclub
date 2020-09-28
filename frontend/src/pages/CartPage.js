@@ -85,12 +85,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) =>{
     return {
-<<<<<<< HEAD
         setDeliveryMode: (mode, shipping) => dispatch(setDeliveryMode(mode, shipping)),
         emptyCart: () => dispatch(emptyCart())
-=======
-        // setDeliveryMode: () => dispatch(setDeliveryMode(ownProps.mode))
->>>>>>> 67095d5a42b87e5e5798afa4665410564b518860
     }
 }
 
