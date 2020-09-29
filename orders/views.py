@@ -84,7 +84,7 @@ def validate_client(data, delivery_mode):
     return all([name, phone, email, delivery])
 
 def validate_cart(data):
-    return True
+    return len(data.get('items')) > 0
 
 def create_whatsapp_url(client, order, address, place):
     # Place Data
@@ -110,10 +110,9 @@ def create_whatsapp_url(client, order, address, place):
     else:
         data_delivery = ''
         data_intro = (
-            f"Soy *{name}* y quiero hacer el siguiente pedido para retirar por el local"
+            f"Soy *{name}* y quiero hacer el siguiente pedido para retirar por el local "
             f"en {place_address}:\n")
     # Get the url
-    
     url = (
         f"{whatsapp}?text=Hola 🍕*{place_name}*🍕!\n"
         f"{data_intro}"

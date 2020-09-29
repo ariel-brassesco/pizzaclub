@@ -17,6 +17,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 export const FormCart = ({subtotal, total, shipping, mode, items, emptyCart}) => {
     // Define initial fields values
+    console.log(items.length)
     let initialFieldsValues = {
         name: '',
         email: '',
@@ -46,7 +47,7 @@ export const FormCart = ({subtotal, total, shipping, mode, items, emptyCart}) =>
 
         if (!/^\d{7,12}$/.test(values.phone)) errors.phone = "Debe tener entre 7 y 12 digitos.";
 
-    return errors;
+        return errors;
     };
 
     const handleSubmit = (values,actions) => {
@@ -77,7 +78,7 @@ export const FormCart = ({subtotal, total, shipping, mode, items, emptyCart}) =>
         validate={validate}
         onSubmit={(values, actions) => handleSubmit(values, actions)}>
             {({isSubmitting}) => (
-            <Form>
+            <Form className='cart-shower'>
                 <Field
                     type="text"
                     name="name" 
@@ -115,12 +116,12 @@ export const FormCart = ({subtotal, total, shipping, mode, items, emptyCart}) =>
                     component={CustomField}/>
                 <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="button is-primary is-small gotocart-btn">
+                    disabled={isSubmitting || !items.length}
+                    className="button is-primary btn-whatsapp-send">
                     <span className="icon">
                         <i className="fab fa-whatsapp"></i>
-                        <span>Enviar ya por WhatsApp!</span>
                     </span>
+                    <span>Enviar ya por WhatsApp!</span>
                 </button>
             </Form>
             )}

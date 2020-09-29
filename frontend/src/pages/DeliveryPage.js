@@ -54,7 +54,7 @@ class DeliveryPage extends Component {
                 <Menu interactive={interactive}/>
                 <GoToCart path={goCart}
                         className="gotocart"
-                        classBtn='button is-primary is-small gotocart-btn'/>
+                        classBtn='button is-primary gotocart-btn'/>
             </div>)
     }
 }
