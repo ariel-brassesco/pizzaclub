@@ -1,6 +1,6 @@
 import "./styles/main.css";
 import React, { Component } from "react";
-import { Switch, Route, BrowserRouter, useRouteMatch } from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 //Import Constants
 import { DELIVERY_MODE, TAKEAWAY_MODE } from "./constants";
@@ -13,12 +13,17 @@ import {
   DELIVERY_CART,
   TAKEAWAY_CART,
   CONFIRM_CART,
+  DASHBOARD,
+  DASHBOARD_LOGIN,
 } from "./routes";
+import PrivateRoute from "./components/PrivateRoute";
 // Import Pages
 import MainPage from "./pages/MainPage";
 import MenuPage from "./pages/MenuPage";
 import DeliveryPage from "./pages/DeliveryPage";
 import CartPage from "./pages/CartPage";
+import DashboardPage from "./pages/Dashboard";
+import DashboardLoginPage from "./pages/DashboardLogin";
 
 class App extends Component {
   render() {
@@ -29,7 +34,9 @@ class App extends Component {
       <BrowserRouter basename="">
         <Switch>
           <Route exact path={INDEX} component={MainPage} />
+
           <Route path={MENU} component={MenuPage} />
+
           <Route
             path={[TAKEAWAY_CART, DELIVERY_CART]}
             children={({ match }) => {
@@ -43,6 +50,7 @@ class App extends Component {
               );
             }}
           />
+
           <Route path={DELIVERY}>
             <DeliveryPage
               goBack={INDEX}
@@ -52,6 +60,7 @@ class App extends Component {
               interactive={true}
             />
           </Route>
+
           <Route path={TAKEAWAY}>
             <DeliveryPage
               goBack={INDEX}
@@ -60,6 +69,14 @@ class App extends Component {
               shipping={0.0}
               interactive={true}
             />
+          </Route>
+
+          <PrivateRoute exact path={DASHBOARD} redirect={DASHBOARD_LOGIN}>
+            <DashboardPage />
+          </PrivateRoute>
+
+          <Route path={DASHBOARD_LOGIN}>
+            <DashboardLoginPage />
           </Route>
 
           {/*<Route component={NotFound}/>*/}
