@@ -4,9 +4,9 @@ from . import views
 
 app_name = 'registration'
 urlpatterns = [
-    path("login", views.login_view, name="login"),
+    #path("login", views.login_view, name="login"),
     #path("direct-login", views.direct_login, name="direct_login"),
-    path("logout", views.logout_view, name="logout"),
+    #path("logout", views.logout_view, name="logout"),
     #path("signin", views.signin_view, name="signin"),
     #path("owner", views.owner_login_view, name="owner_login"),
     #path("password_reset", views.password_reset, name="password_reset"),

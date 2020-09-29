@@ -1,5 +1,5 @@
 // Define one day in miliseconds to update the data in localStorage
-export const DAY_IN_MS = 50*1000; 
+export const DAY_IN_MS = 3600*1000; 
 
 // Define keys in localStorage
 export const OWNER_KEY = 'ownerState';

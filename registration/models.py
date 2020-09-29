@@ -18,6 +18,9 @@ class Address(models.Model):
     class Meta:
         verbose_name_plural = "Address"
 
+    def __str__(self):
+        return self.address
+
 class User(AbstractUser):
     '''
         Extend the User Django built in model.

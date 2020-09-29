@@ -243,7 +243,7 @@ class Shipping(models.Model):
     cost = models.FloatField(default=0.0)
 
     def __str__(self):
-        return self.cost
+        return str(self.cost)
 
 class Order(models.Model):
     STATUS_CHOICES = [
