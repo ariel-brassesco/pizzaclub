@@ -288,11 +288,12 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         # Set the value of shipping
         if self.delivery_mode == 'delivery': self.shipping = Shipping.objects.last()
+        shipping_cost = self.shipping.cost if self.shipping else 0.0
         # Calculate the total
         total = 0
         for item in self.items.select_related():
             total += item.total
-        self.total = total 
+        self.total = total + shipping_cost
         super(Order, self).save(*args, **kwargs)
 
 class OrderItem(models.Model):
