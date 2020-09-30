@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
 
 export const Logo = (props) => {
   const { image, alt, className, classImg } = props;
@@ -81,7 +80,7 @@ export const CustomField = ({ field, form: { touched, errors }, ...props }) => (
   <div className="field">
     {props.label ? <label className="label">{props.label}</label> : null}
     <div className="control">
-      {props.type == "textarea" ? (
+      {props.type === "textarea" ? (
         <textarea
           type="text"
           className="input"

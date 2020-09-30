@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import React from "react";
+import { Formik, Field, Form } from "formik";
 
 //Import Constants
 import { DELIVERY_MODE, URL_API_MAKE_ORDERS } from "../constants";
 //Import Components
-import { CustomField, CSRFToken } from "../components/Common";
+import { CustomField } from "../components/Common";
 import axios from "axios";
 
 //Set CSRF Token configuration
@@ -27,11 +27,11 @@ export const FormCart = ({
     comment: "",
   };
   // If mode is "delivery" add address field
-  if (mode == DELIVERY_MODE)
+  if (mode === DELIVERY_MODE)
     initialFieldsValues = { ...initialFieldsValues, address: "" };
   // Define Required Fields
   const REQUIRED_FIELDS = ["name", "email", "phone"];
-  if (mode == DELIVERY_MODE) REQUIRED_FIELDS.push("address");
+  if (mode === DELIVERY_MODE) REQUIRED_FIELDS.push("address");
   // A custom validation function. This must return an object
   // which keys are symmetrical to our values/initialValues
   const validate = (values) => {
@@ -115,7 +115,7 @@ export const FormCart = ({
             required
           />
           {/* Only show address for DELIVERY */}
-          {mode == DELIVERY_MODE ? (
+          {mode === DELIVERY_MODE ? (
             <Field
               name="address"
               label="Dirección"

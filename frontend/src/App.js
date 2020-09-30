@@ -40,7 +40,7 @@ class App extends Component {
           <Route
             path={[TAKEAWAY_CART, DELIVERY_CART]}
             children={({ match }) => {
-              const goBack = match.url == TAKEAWAY_CART ? TAKEAWAY : DELIVERY;
+              const goBack = match.url === TAKEAWAY_CART ? TAKEAWAY : DELIVERY;
               return (
                 <CartPage
                   path={match.path}
