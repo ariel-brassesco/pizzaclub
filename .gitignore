@@ -131,6 +131,7 @@ dmypy.json
 
 # dependencies
 *.json
+!tsconfig.json
 !package.json
 !package-lock.json
 **/node_modules
