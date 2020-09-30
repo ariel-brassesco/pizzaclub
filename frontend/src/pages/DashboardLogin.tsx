@@ -67,7 +67,7 @@ class DashboardLoginPage extends Component<Props> {
               </div>
 
               <p className="has-text-grey has-text-centered">
-                <a>Olvide mi Contraseña</a>
+                <a href="/forgot-password">Olvide mi Contraseña</a>
               </p>
             </div>
           </div>
