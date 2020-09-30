@@ -8,11 +8,10 @@ export const SHOWCASE_TYPES_KEY = "typesState";
 export const CART_KEY = "cart";
 
 // Define API URLs
-export const URL_API_OWNER = window.location.origin + "/owner/api/owner/";
-export const URL_API_TYPES = window.location.origin + "/owner/api/types/";
-export const URL_API_PRODUCTS = window.location.origin + "/owner/api/products/";
-export const URL_API_MAKE_ORDERS =
-  window.location.origin + "/owner/api/orders/new_order/";
+export const URL_API_OWNER = "/owner/api/owner/";
+export const URL_API_TYPES = "/owner/api/types/";
+export const URL_API_PRODUCTS = "/owner/api/products/";
+export const URL_API_MAKE_ORDERS = "/owner/api/orders/new_order/";
 
 //Define Shipping Cost
 export const SHIPPING_COST = 60;

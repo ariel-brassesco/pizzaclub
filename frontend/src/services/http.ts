@@ -6,7 +6,7 @@ const mapData = (result: AxiosResponse<any>) => result.data;
 
 export class Http {
   public constructor() {
-    axios.defaults.baseURL = "/";
+    axios.defaults.baseURL = "/api";
   }
 
   public setAuth(token: string) {
