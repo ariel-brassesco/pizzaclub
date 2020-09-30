@@ -1,4 +1,4 @@
-@import "./normalize.css";
+@import "~bulma/css/bulma.css";
 @import "./general.css";
 @import "./mainpage.css";
 @import "./menupage.css";
