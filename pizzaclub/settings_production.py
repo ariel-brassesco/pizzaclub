@@ -6,7 +6,6 @@ ALLOWED_HOSTS = ['thepizzaclub.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'frontend.apps.FrontendConfig',
     'registration.apps.RegistrationConfig',
     'orders.apps.OrdersConfig',
     'django.contrib.admin',

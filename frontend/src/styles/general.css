@@ -14,7 +14,8 @@
   --product-card-font-size: 12px;
   --product-counter-color: white;
   --product-counter-bgcolor: hsl(0, 50%, 50%);
-  --prodcut-counter-size: 7px;
+  --product-counter-size: 12px;
+  --product-counter-font-size: 10px;
 }
 
 #app {

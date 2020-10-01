@@ -1,0 +1,43 @@
+.cart-shower {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 90%;
+}
+
+.cart-title {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.cart-price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+.cart-list-type {
+  font-size: 0.7em;
+  margin-left: 30px;
+}
+
+.cart-total-item {
+  border-top: 2px solid #ccc;
+  padding-top: 5px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+}
+
+.btn-whatsapp-send {
+  width: 100%;
+  font-weight: bold;
+  font-size: 1em;
+}

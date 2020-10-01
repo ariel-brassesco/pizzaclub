@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 
 .product-type {
@@ -50,7 +50,6 @@
   background-color: var(--header-background);
   color: var(--primary-color);
   font-weight: bold;
-  font-size: 0.8em;
   padding: 5px 2px;
 }
 
@@ -60,6 +59,16 @@
   align-items: baseline;
   text-decoration: none;
   width: 90%;
+  font-weight: bold;
+}
+
+.gotocart-btn__marginy {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.gotocart-btn__center {
+  justify-content: center;
 }
 
 /* CSS for Products Card */
@@ -112,20 +121,23 @@
 .product-price-tag {
   position: relative;
   color: var(--price-color);
+  cursor: pointer;
 }
 
 .price-tag-counter {
   position: absolute;
-  display: block;
-  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -5px;
   right: 0;
-  font-size: var(--product-counter-size);
-  line-height: 8px;
+  width: var(--product-counter-size);
+  height: var(--product-counter-size);
+  font-size: var(--product-counter-font-size);
   color: var(--product-counter-color);
   background-color: var(--product-counter-bgcolor);
   border-radius: 50%;
-  margin: auto;
-  padding: 1px;
+  font-weight: lighter;
 }
 
 .product-card-sizes,

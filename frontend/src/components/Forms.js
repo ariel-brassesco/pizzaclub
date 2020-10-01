@@ -20,18 +20,19 @@ export const FormCart = ({
   emptyCart,
 }) => {
   // Define initial fields values
-  console.log(items.length)let initialFieldsValues = {
+  console.log(items.length);
+  let initialFieldsValues = {
     name: "",
     email: "",
     phone: "",
     comment: "",
   };
   // If mode is "delivery" add address field
-  if (mode === DELIVERY_MODE)
+  if (mode == DELIVERY_MODE)
     initialFieldsValues = { ...initialFieldsValues, address: "" };
   // Define Required Fields
   const REQUIRED_FIELDS = ["name", "email", "phone"];
-  if (mode === DELIVERY_MODE) REQUIRED_FIELDS.push("address");
+  if (mode == DELIVERY_MODE) REQUIRED_FIELDS.push("address");
   // A custom validation function. This must return an object
   // which keys are symmetrical to our values/initialValues
   const validate = (values) => {
@@ -52,7 +53,7 @@ export const FormCart = ({
     if (!/^\d{7,12}$/.test(values.phone))
       errors.phone = "Debe tener entre 7 y 12 digitos.";
 
-        return errors;
+    return errors;
   };
 
   const handleSubmit = (values, actions) => {
@@ -91,7 +92,7 @@ export const FormCart = ({
       onSubmit={(values, actions) => handleSubmit(values, actions)}
     >
       {({ isSubmitting }) => (
-        <FormclassName='cart-shower'>
+        <Form className="cart-shower">
           <Field
             type="text"
             name="name"
@@ -115,7 +116,7 @@ export const FormCart = ({
             required
           />
           {/* Only show address for DELIVERY */}
-          {mode === DELIVERY_MODE ? (
+          {mode == DELIVERY_MODE ? (
             <Field
               name="address"
               label="Dirección"
@@ -132,14 +133,13 @@ export const FormCart = ({
           />
           <button
             type="submit"
-            disabled={isSubmitting|| !items.length}
+            disabled={isSubmitting || !items.length}
             className="button is-primary btn-whatsapp-send"
           >
             <span className="icon">
               <i className="fab fa-whatsapp"></i>
-              </span>
-                    <span>Enviar ya por WhatsApp!</span>
-
+            </span>
+            <span>Enviar ya por WhatsApp!</span>
           </button>
         </Form>
       )}
