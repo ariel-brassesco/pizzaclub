@@ -46,6 +46,7 @@ class PriceAdmin(admin.ModelAdmin):
         'product',
         'presentation',
         'size',
+        'price',
         'is_active',
         'is_available',
         'created_at',
