@@ -20,7 +20,7 @@ export const FormCart = ({
   emptyCart,
 }) => {
   // Define initial fields values
-  let initialFieldsValues = {
+  console.log(items.length)let initialFieldsValues = {
     name: "",
     email: "",
     phone: "",
@@ -52,7 +52,7 @@ export const FormCart = ({
     if (!/^\d{7,12}$/.test(values.phone))
       errors.phone = "Debe tener entre 7 y 12 digitos.";
 
-    return errors;
+        return errors;
   };
 
   const handleSubmit = (values, actions) => {
@@ -91,7 +91,7 @@ export const FormCart = ({
       onSubmit={(values, actions) => handleSubmit(values, actions)}
     >
       {({ isSubmitting }) => (
-        <Form>
+        <FormclassName='cart-shower'>
           <Field
             type="text"
             name="name"
@@ -132,13 +132,14 @@ export const FormCart = ({
           />
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="button is-primary is-small gotocart-btn"
+            disabled={isSubmitting|| !items.length}
+            className="button is-primary btn-whatsapp-send"
           >
             <span className="icon">
               <i className="fab fa-whatsapp"></i>
-              <span>Enviar ya por WhatsApp!</span>
-            </span>
+              </span>
+                    <span>Enviar ya por WhatsApp!</span>
+
           </button>
         </Form>
       )}

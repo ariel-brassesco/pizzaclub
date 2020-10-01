@@ -24,58 +24,52 @@ class CartPage extends Component {
     setDeliveryMode(mode, shipping);
   }
 
-  render() {
-    const { goBack, goConfirm, path } = this.props;
-    const { subtotal, total, shipping, mode, items, emptyCart } = this.props;
-    return (
-      <div className="menupage">
-        <PlaceHeader only_name />
-        <Switch>
-          <Route path={path + goConfirm}>
-            <FormCart
-              {...{ subtotal, total, shipping, mode, items, emptyCart }}
-            />
-            <GoToButton
-              path={path}
-              className="button is-warning is-small gotocart-btn"
-            >
-              <span className="icon">
-                <i className="fas fa-undo"></i>
-                <span>Volver al pedido</span>
-              </span>
-            </GoToButton>
-          </Route>
-          <Route path={path}>
-            <CartShower
-              items={items}
-              subtotal={subtotal}
-              total={total}
-              mode={mode}
-              shipping={shipping}
-            />
-            <GoToButton
-              path={path + goConfirm}
-              className="button is-primary is-small gotocart-btn"
-            >
-              <span className="icon">
-                <i className="fas fa-clipboard-check"></i>
-                <span>Confirmar tu pedido!</span>
-              </span>
-            </GoToButton>
-            <GoToButton
-              path={goBack}
-              className="button is-warning is-small gotocart-btn"
-            >
-              <span className="icon">
-                <i className="fas fa-undo"></i>
-                <span>Volver al menú</span>
-              </span>
-            </GoToButton>
-          </Route>
-        </Switch>
-      </div>
-    );
-  }
+    render() {
+        const {goBack, goConfirm, path} = this.props;
+        const {subtotal, total, shipping, mode, items, emptyCart} = this.props;
+        return (
+            <div className='menupage'>
+                <PlaceHeader only_name/>
+                <div className='cartpage'>
+                    <Switch>
+                        <Route path={path + goConfirm}>
+                            <FormCart {...{subtotal, total, shipping, mode, items, emptyCart}} />
+                            <GoToButton
+                                path={path}
+                                className="button is-warning gotocart-btn gotocart-btn__marginy gotocart-btn__center">
+                                <span className="icon">
+                                    <i className="fas fa-undo"></i>
+                                </span>
+                                <span>Volver al pedido</span>
+                            </GoToButton>
+                        </Route>
+                        <Route path={path}>
+                            <CartShower items={items}
+                                        subtotal={subtotal}
+                                        total={total}
+                                        mode={mode}
+                                        shipping={shipping}/>
+                            <GoToButton
+                                path={path + goConfirm}
+                                className="button is-primary gotocart-btn gotocart-btn__marginy gotocart-btn__center">
+                                <span className="icon">
+                                    <i className="fas fa-clipboard-check"></i>
+                                </span>
+                                <span>Confirmar tu pedido!</span>
+                            </GoToButton>
+                            <GoToButton
+                                path={goBack}
+                                className="button is-warning gotocart-btn gotocart-btn__marginy gotocart-btn__center">
+                                <span className="icon">
+                                    <i className="fas fa-undo"></i>
+                                </span>
+                                <span>Volver al menú</span>
+                            </GoToButton>
+                        </Route>
+                    </Switch>
+                </div>
+            </div>)
+    }
 }
 
 const mapStateToProps = (state) => {

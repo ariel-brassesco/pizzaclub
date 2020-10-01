@@ -6,7 +6,6 @@ from .models import Product, PriceList, Place, Shipping, Order, OrderItem
 
 class ShippingAdmin(admin.ModelAdmin):
     list_display = (
-        'id',
         'cost',
         'created_at',
         'last_modified'
@@ -47,6 +46,7 @@ class PriceAdmin(admin.ModelAdmin):
         'product',
         'presentation',
         'size',
+        'price',
         'is_active',
         'is_available',
         'created_at',
