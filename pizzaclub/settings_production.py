@@ -1,7 +1,8 @@
 import os
 from .settings import BASE_DIR
 
-ALLOWED_HOSTS = ['thepizzaclub.herokuapp.com']
+
+ALLOWED_HOSTS = ['pizzaclub.herokuapp.com', '.tustore.app']
 
 # Application definition
 
@@ -25,7 +26,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

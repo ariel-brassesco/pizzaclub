@@ -12,7 +12,10 @@ import dotenv
 
 from django.core.wsgi import get_wsgi_application
 
-dotenv.read_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
+try:
+    dotenv.read_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
+except Exception as e:
+    print('no .env file, using default os env')
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pizzaclub.settings')
 
