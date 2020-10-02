@@ -5,10 +5,10 @@ from django.core.validators import MinLengthValidator, MaxLengthValidator, Regex
 from pizzaclub.settings import MAX_CUIL_LENGTH, MIN_CUIL_LENGTH
 from pizzaclub.settings import MAX_PHONE_LENGTH, MIN_PHONE_LENGTH
 from registration.models import Employee, Client, Address
-#from gdstorage.storage import GoogleDriveStorage
+from gdstorage.storage import GoogleDriveStorage
 
 # Define Google Drive Storage
-#gd_storage = GoogleDriveStorage()
+gd_storage = GoogleDriveStorage()
 # Create your models here.
 
 class SizeProductError(Exception):
@@ -118,7 +118,7 @@ class Product(models.Model):
     order_n = models.PositiveSmallIntegerField(default=0)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100, blank=True)
-    #image = models.ImageField(upload_to="products/", storage=gd_storage)
+    image = models.ImageField(upload_to="products/", storage=gd_storage)
     types = models.ForeignKey(TypeProduct, on_delete=models.CASCADE)
     subtype = models.ForeignKey(SubTypeProduct, on_delete=models.SET_NULL, null=True, blank=True)
     presentation = models.ManyToManyField(PresentationProduct, blank=True)
@@ -243,7 +243,7 @@ class Shipping(models.Model):
     cost = models.FloatField(default=0.0)
 
     def __str__(self):
-        return self.cost
+        return str(self.cost)
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -288,11 +288,12 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         # Set the value of shipping
         if self.delivery_mode == 'delivery': self.shipping = Shipping.objects.last()
+        shipping_cost = self.shipping.cost if self.shipping else 0.0
         # Calculate the total
         total = 0
         for item in self.items.select_related():
             total += item.total
-        self.total = total 
+        self.total = total + shipping_cost
         super(Order, self).save(*args, **kwargs)
 
 class OrderItem(models.Model):

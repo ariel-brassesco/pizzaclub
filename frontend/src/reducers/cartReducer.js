@@ -25,13 +25,17 @@ const INITIAL_CART_STATE = getData(CART_KEY)
 
 export function cartReducer(state = INITIAL_CART_STATE, action) {
   let new_state = {};
+  let items = [];
+  let quantity = 0;
+  let subtotal = 0;
+
   switch (action.type) {
     case ADD_CART_ITEM:
       let has_item = state.items.filter((item) => item.id === action.item.id)
         .length;
       // If the item is not in cart add it
       // else updated
-      let items =
+      items =
         has_item === 0
           ? state.items.concat(action.item)
           : state.items.map((item) =>
@@ -48,8 +52,8 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
       // Update the quantity and subtotal
       items = state.items.map((item) => {
         if (item.id === action.id) {
-          let quantity = item.quantity + 1;
-          let subtotal = quantity * item.price;
+          quantity = item.quantity + 1;
+          subtotal = quantity * item.price;
           return { ...item, quantity, subtotal };
         }
         return item;
@@ -61,9 +65,9 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
       // Update the quantity and subtotal
       items = state.items.map((item) => {
         if (item.id === action.id) {
-          let quantity = item.quantity - 1;
+          quantity = item.quantity - 1;
           if (quantity <= 0) quantity = 0;
-          let subtotal = quantity * item.price;
+          subtotal = quantity * item.price;
           return { ...item, quantity, subtotal };
         }
         return item;
@@ -84,7 +88,7 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
       break;
   }
   // Calculate subtotal an total
-  let subtotal = new_state.items.reduce((c, a) => a.subtotal + c, 0);
+  subtotal = new_state.items.reduce((c, a) => a.subtotal + c, 0);
   let total = subtotal + new_state.shipping;
   // Update the new_state
   new_state = { ...new_state, subtotal, total };

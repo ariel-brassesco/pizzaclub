@@ -8,15 +8,35 @@ import { getCartItems, getSubtotalCart } from "../reducers/cartReducer";
 // Import Constants
 import { DELIVERY_MODE } from "../constants";
 
+// This component show a text and price y the format "text       $ price"
+// It's a div container with two span (one for text one for price)
+// Can pass the class for div and class for span, and the decimal places for price
+const PriceItem = ({
+  className,
+  classItem,
+  price,
+  text,
+  decimalPlaces = 2,
+}) => {
+  return (
+    <div className={className}>
+      <span className={classItem}>{text}</span>
+      <span className={classItem}>{`$ ${price.toFixed(decimalPlaces)}`}</span>
+    </div>
+  );
+};
+
 export const CartItem = (props) => {
   const { size, presentation, quantity, subtotal, product } = props;
   return (
-    <div>
-      <div>
-        <span>{`${quantity} x ${product.name}`}</span>
-        <span>{`$ ${subtotal.toFixed(2)}`}</span>
-      </div>
-      <ul>
+    <div className="cart-item">
+      <PriceItem
+        text={`${quantity} x ${product.name}`}
+        price={subtotal}
+        decimalPlaces={2}
+        className="cart-price-item"
+      />
+      <ul className="cart-list-type">
         {size ? <li>{size}</li> : null}
         {presentation ? <li>{presentation}</li> : null}
       </ul>
@@ -41,12 +61,12 @@ const CheckoutCart = (props) => {
   return (
     <div className={className}>
       {!items.length ? (
-        [
-          <span key="1" className="icon">
+        <div className="gotocart-btn">
+          <span className="icon">
             <i className="fas fa-hand-point-up"></i>
-          </span>,
-          <span key="2">Seleccioná para armar tu pedido</span>,
-        ]
+          </span>
+          <span>Seleccioná para armar tu pedido</span>
+        </div>
       ) : (
         <GoToButton path={path} className={classBtn}>
           <div>
@@ -71,11 +91,22 @@ const mapStateToPropsCart = (state) => {
 
 export const GoToCart = connect(mapStateToPropsCart, null)(CheckoutCart);
 
-const ShippingItem = ({ shipping }) => {
+// const ShippingItem = ({shipping, className, classItem}) => {
+//     return (
+//         <div className={className}>
+//             <span className={classItem}>Envío</span>
+//             <span className={classItem}>{`$ ${shipping.toFixed(2)}`}</span>
+//         </div>
+//     )
+// }
+
+const CartTitle = ({ className, text }) => {
   return (
-    <div>
-      <span>Envío</span>
-      <span>{`$ ${shipping.toFixed(2)}`}</span>
+    <div className={className}>
+      <span className="icon">
+        <i className="fas fa-shopping-basket"></i>
+      </span>
+      <span>{text}</span>
     </div>
   );
 };
@@ -83,7 +114,12 @@ const ShippingItem = ({ shipping }) => {
 export function CartShower(props) {
   const { mode, shipping, items, subtotal, total } = props;
   return (
-    <div>
+    <div className="cart-shower">
+      {/* Show Cart Title */}
+      <CartTitle
+        className="cart-title"
+        text="Controlá el detalle de tu pedido"
+      />
       {/* Show Cart Items */}
       {items.map((i) => {
         const size = i.product.size.filter((s) => s.id == i.size)[0];
@@ -103,17 +139,28 @@ export function CartShower(props) {
       {mode !== DELIVERY_MODE
         ? null
         : [
-            <div key="subtotal">
-              <span>Subtotal</span>
-              <span>{`$ ${subtotal.toFixed(2)}`}</span>
-            </div>,
-            <ShippingItem key="shipping" shipping={shipping} />,
+            <PriceItem
+              key="subtotal"
+              text="Subtotal"
+              price={subtotal}
+              decimalPlaces={2}
+              className="cart-price-item"
+            />,
+            <PriceItem
+              key="shipping"
+              text="Envío"
+              price={shipping}
+              decimalPlaces={2}
+              className="cart-price-item"
+            />,
           ]}
       {/* Show total */}
-      <div>
-        <span>total</span>
-        <span>{`$ ${total.toFixed(2)}`}</span>
-      </div>
+      <PriceItem
+        text="Total"
+        price={total}
+        decimalPlaces={2}
+        className="cart-price-item cart-total-item"
+      />
     </div>
   );
 }

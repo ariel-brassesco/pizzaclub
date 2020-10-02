@@ -25,8 +25,9 @@ def profile_client(request):
 # DEFINE REST API FUNCTIONS
 # Import modules
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 from .models import Product, PriceList, Place, TypeProduct, Order, OrderItem
 from .serializers import ProductSerializer, PriceSerializer, OwnerSerializer, TypeSerializer
@@ -84,7 +85,7 @@ def validate_client(data, delivery_mode):
     return all([name, phone, email, delivery])
 
 def validate_cart(data):
-    return True
+    return len(data.get('items')) > 0
 
 def create_whatsapp_url(client, order, address, place):
     # Place Data
@@ -110,10 +111,9 @@ def create_whatsapp_url(client, order, address, place):
     else:
         data_delivery = ''
         data_intro = (
-            f"Soy *{name}* y quiero hacer el siguiente pedido para retirar por el local"
+            f"Soy *{name}* y quiero hacer el siguiente pedido para retirar por el local "
             f"en {place_address}:\n")
     # Get the url
-    
     url = (
         f"{whatsapp}?text=Hola 🍕*{place_name}*🍕!\n"
         f"{data_intro}"
@@ -126,6 +126,7 @@ def create_whatsapp_url(client, order, address, place):
     return iri_to_uri(url)
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def make_order(request):
     if request.method == 'POST':
         #Get the data

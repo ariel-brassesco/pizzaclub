@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='order',
             name='delivery_mode',
-            field=models.CharField(choices=[('takeaway', 'takeaway'), ('delivery', 'delivery'), ('local', 'local')], default=django.utils.timezone.now, max_length=8),
+            field=models.CharField(choices=[('takeaway', 'takeaway'), ('delivery', 'delivery'), ('local', 'local')], default='takeaway', max_length=8),
             preserve_default=False,
         ),
         migrations.AddField(
