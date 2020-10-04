@@ -1,6 +1,6 @@
 // import { v4 as uuidv4 } from 'uuid';
 // Import Constants
-import { CART_KEY } from "../constants";
+import { CART_KEY, LOCAL_MODE } from "../constants";
 //Import Functions
 import { saveData, getData } from "../data";
 // Import Actions
@@ -10,7 +10,7 @@ import {
   PLUS_ONE_QUANTITY_ITEM,
   MINUS_ONE_QUANTITY_ITEM,
   EMPTY_CART,
-  SET_DELIVERY_MODE,
+  SET_DELIVERY
 } from "../actions/actionsCart";
 
 const INITIAL_CART_STATE = getData(CART_KEY)
@@ -19,8 +19,11 @@ const INITIAL_CART_STATE = getData(CART_KEY)
       items: [],
       subtotal: 0,
       total: 0.0,
-      delivery: null,
-      shipping: 0.0,
+      delivery: LOCAL_MODE,
+      shipping: {
+        id: 0,
+        cost: 0
+      }
     };
 
 export function cartReducer(state = INITIAL_CART_STATE, action) {
@@ -78,10 +81,10 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
     case EMPTY_CART:
       new_state = { ...state, items: [] };
       break;
-    case SET_DELIVERY_MODE:
-      // Set the delivery mode and the shipping cost
-      let { shipping, mode } = action;
-      new_state = { ...state, delivery: mode, shipping };
+    case SET_DELIVERY:
+      // Set the delivery mode
+      let { mode, shipping } = action;
+      new_state = { ...state, delivery: mode, shipping};
       break;
     default:
       new_state = { ...state };
@@ -89,7 +92,7 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
   }
   // Calculate subtotal an total
   subtotal = new_state.items.reduce((c, a) => a.subtotal + c, 0);
-  let total = subtotal + new_state.shipping;
+  let total = subtotal + new_state.shipping.cost;
   // Update the new_state
   new_state = { ...new_state, subtotal, total };
   // Save the new_state in localStorage

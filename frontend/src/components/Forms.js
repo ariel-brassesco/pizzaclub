@@ -2,25 +2,19 @@ import React from "react";
 import { Formik, Field, Form } from "formik";
 
 //Import Constants
-import { DELIVERY_MODE, URL_API_MAKE_ORDERS } from "../constants";
+import { DELIVERY_MODE} from "../constants";
 //Import Components
 import { CustomField } from "../components/Common";
-import axios from "axios";
-
-//Set CSRF Token configuration
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.xsrfHeaderName = "X-CSRFToken";
+import {http, apiRoutes} from '../services/http';
 
 export const FormCart = ({
-  subtotal,
-  total,
   shipping,
   mode,
   items,
   emptyCart,
+  owner_id
 }) => {
   // Define initial fields values
-  console.log(items.length);
   let initialFieldsValues = {
     name: "",
     email: "",
@@ -50,39 +44,38 @@ export const FormCart = ({
       errors.email = "Correo electrónico inválido.";
     }
 
-    if (!/^\d{7,12}$/.test(values.phone))
-      errors.phone = "Debe tener entre 7 y 12 digitos.";
+    if (!/^\d{8,12}$/.test(values.phone))
+      errors.phone = "Debe tener entre 8 y 12 digitos.";
 
     return errors;
   };
 
   const handleSubmit = (values, actions) => {
+    const {comment, address, ...client} = values;
     const cart = {
-      subtotal,
-      total,
-      shipping,
-      mode,
-      items,
+      owner_id,
       order_type: "whatsapp",
+      delivery_mode: mode,
+      client,
+      shipping: (mode === DELIVERY_MODE)?shipping.id:null,
+      items: items.map(({quantity, size, presentation, product: {id}}) => (
+        {product: id,size, presentation, quantity})
+      ),
+      delivery_address: address,
+      comment
     };
-    axios({
-      method: "POST",
-      url: URL_API_MAKE_ORDERS,
-      data: { client: values, cart },
+
+    http.post(apiRoutes.order_whatsapp, cart)
+    .then(data => {
+      console.log(data);
+      emptyCart();
+      actions.setSubmitting(false);
+      window.location.replace(data.url);
     })
-      .then((res) => {
-        if (res.data.success) {
-          emptyCart();
-          actions.setSubmitting(false);
-          window.location.replace(res.data.url);
-        } else {
-          console.error(res.data.error);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        actions.setSubmitting(false);
-      });
+    .catch(error => {
+      console.log(error);
+      actions.setSubmitting(false);
+    });
   };
 
   return (

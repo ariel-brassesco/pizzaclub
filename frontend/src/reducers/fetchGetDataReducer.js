@@ -16,12 +16,14 @@ export default (PENDING_ACTION, SUCCESS_ACTION, ERROR_ACTION, UPDATE_ACTION) =>
         return {
           ...state,
           pending: true,
+          error: null
         };
       case SUCCESS_ACTION:
         return {
           ...state,
           pending: false,
           data: action.payload,
+          error: null
         };
       case ERROR_ACTION:
         return {

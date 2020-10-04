@@ -118,4 +118,6 @@ class Client(models.Model):
             RegexValidator(regex=r'^\d+$')
         ])
     address = models.ManyToManyField(Address)
-
+    
+    def __str__(self):
+        return self.name

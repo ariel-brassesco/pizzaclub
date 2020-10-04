@@ -24,19 +24,24 @@ import {
   getTypesError,
   getTypesUpdate,
 } from "../reducers/showcaseReducer";
+// Import Constants 
+import {SHOWCASE_PRODUCT_KEY, SHOWCASE_TYPES_KEY} from '../constants';
+// Import functions
+import {getStoredState} from '../data';
 
 class ShowcaseData extends Component {
   componentDidMount() {
-    const { updateProd, pendingProd, storedProdKey } = this.props;
-    const { updateType, pendingType, storedTypeKey } = this.props;
-    const { errorProd, errorType } = this.props;
+    const { pendingProd, errorProd, storedProdKey } = this.props;
+    const { pendingType, errorType , storedTypeKey } = this.props;
     const {
       updateProdData,
       updateTypeData,
       fetchProducts,
       fetchTypes,
     } = this.props;
-
+    
+    const {update: updateProd}= getStoredState(SHOWCASE_PRODUCT_KEY);
+    const {update: updateType} = getStoredState(SHOWCASE_TYPES_KEY);
     // Check if products data has to be fetching or updating from localStorage
     if (updateProd && !errorProd) {
       console.log("Update Products from localStorage");
@@ -47,7 +52,7 @@ class ShowcaseData extends Component {
     }
     // Check if types data has to be fetching or updating from localStorage
     if (updateType && !errorType) {
-      console.log("Update Products from localStorage");
+      console.log("Update Types from localStorage");
       updateTypeData(storedTypeKey);
     } else {
       if (!pendingType) fetchTypes();

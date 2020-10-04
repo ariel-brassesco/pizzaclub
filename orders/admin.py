@@ -17,6 +17,7 @@ class PlaceAdmin(admin.ModelAdmin):
         'created_at',
         'last_modified'
     )
+    filter_horizontal = ('shipping',)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name',
                     'description',
