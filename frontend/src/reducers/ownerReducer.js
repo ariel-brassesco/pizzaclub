@@ -9,7 +9,7 @@ import {
     UPDATE_OWNER_STORED
 } from '../actions/actionsOwner';
 // Import auxiliar functions
-import { getStoredState, saveData, getData } from '../data';
+import { saveData, getData } from '../data';
 // Import Constants
 import  { OWNER_KEY } from '../constants'
 
@@ -20,7 +20,11 @@ import  { OWNER_KEY } from '../constants'
     It is a Reducer Generator for fetching data.
 */
 
-const INITIAL_OWNER_STATE = getStoredState(OWNER_KEY);
+// const INITIAL_OWNER_STATE = getStoredState(OWNER_KEY);
+const INITIAL_OWNER_STATE = {
+    update: false,
+    last_modified: 0
+  };
 
 function ownerStatusReducer(state = INITIAL_OWNER_STATE, action) {
     switch(action.type) {
@@ -40,14 +44,19 @@ function ownerStatusReducer(state = INITIAL_OWNER_STATE, action) {
                 data: [],
                 pending: false,
                 update: false,
-                last_modified: Date.now()
+                last_modified: 0
+                // last_modified: Date.now()
             });
             return {...state, update: false}
         case UPDATE_OWNER_STORED:
             // Save the data in localStorage
             let data = getData(action.key);
             saveData(action.key, {...data, update: true});
-            return {...state, update: true}
+            return {
+                ...state,
+                update: true,
+                last_modified: data.last_modified
+            }
         default: 
             return state;
     }

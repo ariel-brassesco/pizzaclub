@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 export const Logo = (props) => {
     const {image, alt, className, classImg} = props
@@ -33,6 +32,7 @@ export const GoToButton = (props) => {
 export const Image = (props) => {
     const {className, imgClass} = props;
     const {src, alt} = props;
+    if (!src) return null;
     return(
         <figure className={className}>
             <img className={imgClass}
@@ -62,15 +62,15 @@ export const SearchProduct = (props) => {
     return (
         <div className="field has-addons">
             <div className="control">
-                <input className="input is-warning"
+                <input className="input is-warning is-medium"
                         type="text"
                         placeholder="Qué buscas?"
                         onChange={handleChange}
                         value={value} />
             </div>
             <div className="control">
-                <button className="button is-warning" onClick={resetInput}>
-                    <span className="icon is-medium">
+                <button className="button is-warning is-medium" onClick={resetInput}>
+                    <span className="icon is-large">
                         <i className="fas fa-times"></i>
                     </span>
                 </button>
@@ -81,11 +81,11 @@ export const SearchProduct = (props) => {
 
 export const CustomField = ({field, form : {touched, errors }, ...props}) => (
     <div className='field'>
-        {(props.label)?<label className="label">{props.label}</label>:null}
+        {(props.label)?<label className="label is-large">{props.label}</label>:null}
         <div className='control'>
             {(props.type == 'textarea')
-            ?<textarea type="text" className="input" {...field} {...props}></textarea>
-            :<input type="text" className="input" {...field} {...props} />}          
+            ?<textarea type="text" className="input is-medium form-comment" {...field} {...props}></textarea>
+            :<input type="text" className="input is-medium" {...field} {...props} />}          
         </div>
         {
             (touched[field.name] && errors[field.name])
@@ -94,3 +94,11 @@ export const CustomField = ({field, form : {touched, errors }, ...props}) => (
         }
     </div>
 );
+
+export const SocialNetworkIcon = ({src, className, classIcon, target}) => {
+    return (
+        <a href={src} className={className} target={target}>
+            <i className={classIcon}></i>
+        </a>
+    )
+}

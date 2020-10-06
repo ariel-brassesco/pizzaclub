@@ -92,7 +92,7 @@ def create_whatsapp_url(client, order, address, place):
     place_name = place.name.title()
     place_address = place.address.address.title()
     whatsapp = 'https://wa.me/541134205675'
-    #whatsapp = place.whatsapp
+    # whatsapp = place.whatsapp
     # Client Data
     name = client.name.title()
     comment = order.comment.strip()

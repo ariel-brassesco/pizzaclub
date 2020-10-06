@@ -112,12 +112,11 @@ export const FormCart = ({subtotal, total, shipping, mode, items, emptyCart}) =>
                     type="textarea"
                     name="comment"
                     label="Comentarios"
-                    className="textarea"
                     component={CustomField}/>
                 <button
                     type="submit"
                     disabled={isSubmitting || !items.length}
-                    className="button is-primary btn-whatsapp-send">
+                    className="button is-primary btn-whatsapp-send cart-btn">
                     <span className="icon">
                         <i className="fab fa-whatsapp"></i>
                     </span>

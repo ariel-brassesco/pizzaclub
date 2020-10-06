@@ -18,8 +18,9 @@
 }
 
 .main-logo img {
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 80vw;
+    max-height: 80vw;
+    padding: 20px;
 }
 
 .main-menu {

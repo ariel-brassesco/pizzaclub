@@ -16,15 +16,21 @@ import {
     getOwnerError,
     getOwnerUpdate
 } from '../reducers/ownerReducer'
-import { updateTypesStored } from '../actions/actionsShowcase';
+// import { updateTypesStored } from '../actions/actionsShowcase';
+// Import Constants 
+import {OWNER_KEY} from '../constants';
+// Import functions
+import {getStoredState} from '../data';
 
 
 class OwnerData extends Component {
 
     componentDidMount(){
-        const {update, pending, error, storedKey } = this.props;
+        // const {update, pending, error, storedKey } = this.props;
+        const { pending, error, storedKey } = this.props;
         const {updateInfo, fetchInfo} = this.props;
         // Check if data has to be fetching or updating from localStorage
+        const {update} = getStoredState(OWNER_KEY);
         if (update && !error) {
             console.log('Update owner info from localStorage');
             updateInfo(storedKey);

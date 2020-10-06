@@ -18,13 +18,15 @@ export default (
                 case PENDING_ACTION: 
                     return {
                         ...state,
-                        pending: true
+                        pending: true,
+                        error: null
                     }
                 case SUCCESS_ACTION:
                     return {
                         ...state,
                         pending: false,
-                        data: action.payload
+                        data: action.payload,
+                        error: null
                     }
                 case ERROR_ACTION:
                     return {

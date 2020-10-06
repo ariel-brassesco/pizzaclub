@@ -25,8 +25,8 @@ export class TypeProduct extends Component {
                 <div className="product-type-title" 
                     onClick={this.hideProducts}>
                     <div>
-                        <span className="icon main-option--icon">
-                            <i className="fas fa-book-open"></i>
+                        <span className="icon is-large main-option--icon">
+                            <i className="fas fa-lg fa-book-open"></i>
                         </span>
                         <span>{name}</span>
                     </div>
@@ -63,18 +63,18 @@ export function QuantityWidget (props) {
         <div className='quantity-widget'>
             {/* <p className='quantity-widget-title'>cantidad</p> */}
             <div className="buttons has-addons quantity-widget-counter">
-                <span className="button is-success is-small is-outlined quantity-widget-btn-left"
+                <span className="button is-success is-medium is-outlined quantity-widget-btn-left"
                     onClick={decrement}>
                     <span className="icon is-small">
                         <i className="fas fa-minus"></i>
                     </span>
                 </span>
-                <input className='input is-success is-small quantity-widget-input'
+                <input className='input is-success is-medium quantity-widget-input'
                         type='text'
                         readOnly
                         value={quantity}
                         name={name} />
-                <span className="button is-success is-small is-outlined quantity-widget-btn-rigth"
+                <span className="button is-success is-medium is-outlined quantity-widget-btn-rigth"
                         onClick={increment}>
                     <span className="icon is-small">
                         <i className="fas fa-plus"></i>
@@ -101,7 +101,7 @@ function PriceTag(props) {
     return(
         <span className={className}
             onClick={onClick}>
-            {(price)?`$ ${price.toFixed(decimal||2)}`:'-'}
+            {(price)?`$ ${price.toFixed(decimal||0)}`:'-'}
             {(counter)?<span className='price-tag-counter'>{counter}</span>:null}
         </span>
     )

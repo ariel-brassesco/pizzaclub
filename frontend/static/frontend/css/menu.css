@@ -3,7 +3,8 @@
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    margin-bottom: 50px;
+    margin-bottom: 55px;
+    padding-top: 20px;
 }
 
 .product-type {
@@ -21,7 +22,7 @@
     align-items: center;
     background-color: var(--secondary-color);
     color: var(--primary-color);
-    font-size: var(--type-title-size);
+    /* font-size: var(--type-title-size); */
     font-weight: bold;
     padding: 2px 5px;
     text-transform: capitalize;
@@ -30,6 +31,10 @@
 .product-type-title div {
     width: 100%;
     text-align: center;
+}
+
+.product-type-title div span:last-child{
+    font-size: var(--type-title-size);
 }
 
 .product-shower {
@@ -55,11 +60,12 @@
 
 .gotocart-btn {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: baseline;
     text-decoration: none;
     width: 90%;
     font-weight: bold;
+    font-size: var(--gocart-select-size);
 }
 
 .gotocart-btn__marginy {
@@ -82,7 +88,7 @@
     font-size: var(--product-card-font-size);
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 5px 5px 2px var(--primary-color);
+    box-shadow: 0px 0px 10px var(--shadow-color);
 }
 
 .product-card-info {
@@ -94,6 +100,11 @@
 .product-info--title {
     text-transform: capitalize;
     font-weight: bold;
+}
+
+.product-info--desc {
+    font-size: var(--product-card-font-description);
+    font-style: italic;
 }
 
 .product-info--desc::first-letter {
@@ -117,8 +128,16 @@
 
 .product-price-tag {
     position: relative;
-    color: var(--price-color);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    color: white;
+    border: 1px solid var(--price-color);
+    background-color: var(--price-color);
+    border-radius: 5px;
     cursor: pointer;
+    padding: 2px 5px;
+    /* width: 100%; */
 }
 
 .price-tag-counter {
@@ -126,8 +145,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    top: -5px;
-    right: 0;
+    top: -10px;
+    right: -10px;
     width: var(--product-counter-size);
     height: var(--product-counter-size);
     font-size: var(--product-counter-font-size);
@@ -143,8 +162,8 @@
 .product-fullview-prices div {
     display: flex;
     justify-content: flex-end;
-    min-width: 40%;
-    font-size: 0.9em;
+    min-width: 50%;
+    font-size: 0.8em;
 }
 
 .product-fullview-prices {
@@ -167,6 +186,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    align-content: stretch;
     margin-left: 5px;
 }
 
@@ -196,10 +217,10 @@
 
 /* CSS for Widget Quantity */
 .quantity-widget {
-    text-align: left;
     margin-top: 5px;
     margin-bottom: 5px;
     align-self: center;
+    width: 100%;
 }
 
 .quantity-widget-title {
@@ -210,13 +231,16 @@
 .quantity-widget-counter {
     display: flex;
     flex-direction: row;
-    max-width: 100px;
+    justify-content: center;
+    max-width: 200px;
+    margin: auto;
 }
 
 .quantity-widget-input {
-    max-width: 40px;
+    max-width: 50px;
     align-self: flex-start;
     text-align: center;
+    border-radius: 0px;
 }
 
 .quantity-widget-btn-rigth {

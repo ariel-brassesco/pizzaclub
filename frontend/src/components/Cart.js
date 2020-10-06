@@ -56,7 +56,7 @@ const CheckoutCart = (props) => {
         <div className={className}>
             {(!items.length)
             ?(<div className='gotocart-btn'>
-                <span className="icon">
+                <span className="icon is-large">
                 <i className="fas fa-hand-point-up"></i>
             </span>
             <span>Seleccioná para armar tu pedido</span>
@@ -96,8 +96,8 @@ export const GoToCart = connect(mapStateToPropsCart, null)(CheckoutCart);
 const CartTitle = ({className, text}) => {
     return (
         <div className={className}>
-            <span className="icon" >
-                <i className="fas fa-shopping-basket"></i>
+            <span className="icon is-medium" >
+                <i className="fas fa-lg fa-shopping-basket"></i>
             </span>
             <span>
                 {text}
@@ -135,7 +135,7 @@ export function CartShower(props) {
                         text="Subtotal"
                         price={subtotal}
                         decimalPlaces={2}
-                        className='cart-price-item'/>,
+                        className='cart-price-item cart-subtotal-item'/>,
                     <PriceItem
                         key="shipping"
                         text="Envío"
