@@ -32,10 +32,6 @@ import {getStoredState} from '../data';
 class ShowcaseData extends Component {
 
     componentDidMount(){
-        // const {updateProd, pendingProd, storedProdKey } = this.props;
-        // const {updateType, pendingType, storedTypeKey } = this.props;
-        // const {errorProd, errorType} = this.props;
-        // const {updateProdData, updateTypeData, fetchProducts, fetchTypes} = this.props;
         const { pendingProd, errorProd, storedProdKey } = this.props;
         const { pendingType, errorType , storedTypeKey } = this.props;
         const {

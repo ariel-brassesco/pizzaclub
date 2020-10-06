@@ -91,8 +91,7 @@ def create_whatsapp_url(client, order, address, place):
     # Place Data
     place_name = place.name.title()
     place_address = place.address.address.title()
-    whatsapp = 'https://wa.me/541134205675'
-    # whatsapp = place.whatsapp
+    whatsapp = place.whatsapp
     # Client Data
     name = client.name.title()
     comment = order.comment.strip()
@@ -102,7 +101,7 @@ def create_whatsapp_url(client, order, address, place):
         item_size = f', {item.product.size} ' if item.product.size else ''
         item_presentation = f', {item.product.presentation} ' if item.product.presentation else ''
         data_item += (
-            f"- {item.quantity} x {item.product.product.name}"
+            f"- {item.quantity} x {item.product.product.types.name} {item.product.product.name}"
             f"{item_size}{item_presentation} (${item.total})\n")
     # Delivery and Intro Data
     if order.delivery_mode == DELIVERY_MODE:

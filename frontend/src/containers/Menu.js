@@ -57,6 +57,7 @@ class Menu extends Component {
                                         interactive={interactive}
                                         data={p}
                                         item={item}
+                                        typeName={t.name}
                                         {...{
                                             addToCart,
                                             removeToCart,

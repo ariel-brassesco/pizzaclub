@@ -22,11 +22,11 @@ const PriceItem = ({className, classItem, price, text, decimalPlaces=2}) => {
 }
 
 export const CartItem = (props) => {
-    const {size, presentation, quantity, subtotal, product} = props;
+    const {typeName, size, presentation, quantity, subtotal, product} = props;
     return (
         <div className='cart-item'>
             <PriceItem 
-                text={`${quantity} x ${product.name}`}
+                text={`${quantity} x ${typeName} ${product.name}`}
                 price={subtotal}
                 decimalPlaces={2}
                 className='cart-price-item'/>
