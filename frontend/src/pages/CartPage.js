@@ -3,7 +3,10 @@ import { connect } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 
 // Import Actions
-import { setDeliveryMode, emptyCart } from "../actions/actionsCart";
+import {
+  setDelivery,
+  emptyCart
+} from "../actions/actionsCart";
 // Import Components
 import { GoToButton } from "../components/Common";
 import { CartShower } from "../components/Cart";
@@ -17,15 +20,20 @@ import {
   getTotalCart,
   getShippingCost,
 } from "../reducers/cartReducer";
+import {getOwnerData} from '../reducers/ownerReducer';
+import { DELIVERY_MODE } from "../constants";
 
 class CartPage extends Component {
   componentDidMount() {
-    const { mode, shipping, setDeliveryMode } = this.props;
-    setDeliveryMode(mode, shipping);
+    const { mode, setDelivery, owner } = this.props;
+    if (mode == DELIVERY_MODE) setDelivery(mode, {
+      id: owner.shipping[0].id,
+      cost: owner.shipping[0].cost
+    });
   }
 
     render() {
-        const {goBack, goConfirm, path} = this.props;
+        const {goBack, goConfirm, path, owner} = this.props;
         const {subtotal, total, shipping, mode, items, emptyCart} = this.props;
         return (
             <div className='menupage'>
@@ -33,7 +41,7 @@ class CartPage extends Component {
                 <div className='cartpage'>
                     <Switch>
                         <Route path={path + goConfirm}>
-                            <FormCart {...{subtotal, total, shipping, mode, items, emptyCart}} />
+                            <FormCart {...{shipping, mode, items, emptyCart, owner_id: owner.id}} />
                             <GoToButton
                                 path={path}
                                 className="button is-warning gotocart-btn gotocart-btn__marginy gotocart-btn__center">
@@ -48,7 +56,7 @@ class CartPage extends Component {
                                         subtotal={subtotal}
                                         total={total}
                                         mode={mode}
-                                        shipping={shipping}/>
+                                        shipping={shipping.cost}/>
                             <GoToButton
                                 path={path + goConfirm}
                                 className="button is-primary gotocart-btn gotocart-btn__marginy gotocart-btn__center">
@@ -79,14 +87,14 @@ const mapStateToProps = (state) => {
     total: getTotalCart(state),
     mode: getDeliveryMode(state),
     shipping: getShippingCost(state),
+    owner: getOwnerData(state),
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setDeliveryMode: (mode, shipping) =>
-      dispatch(setDeliveryMode(mode, shipping)),
     emptyCart: () => dispatch(emptyCart()),
+    setDelivery: (mode, shipping) => dispatch(setDelivery(mode, shipping))
   };
 };
 

@@ -6,6 +6,7 @@ import { Switch, Route, BrowserRouter } from "react-router-dom";
 //Import Constants
 import { DELIVERY_MODE, TAKEAWAY_MODE } from "./constants";
 //Import Routes
+import {apiRoutes} from "./services/http";
 import {
   INDEX,
   MENU,
@@ -18,6 +19,9 @@ import {
   DASHBOARD_LOGIN,
 } from "./routes";
 import PrivateRoute from "./components/PrivateRoute";
+// Import Containers
+import OwnerData from "./containers/Owner";
+import MenuData from "./containers/Showcase";
 // Import Pages
 import MainPage from "./pages/MainPage";
 import MenuPage from "./pages/MenuPage";
@@ -25,14 +29,24 @@ import DeliveryPage from "./pages/DeliveryPage";
 import CartPage from "./pages/CartPage";
 import DashboardPage from "./pages/Dashboard";
 import DashboardLoginPage from "./pages/DashboardLogin";
+// Import Constants
+import {
+  OWNER_KEY,
+  SHOWCASE_PRODUCT_KEY,
+  SHOWCASE_TYPES_KEY,
+} from "./constants";
 
 class App extends Component {
   render() {
-    const deliveryCost = document.getElementById("app").dataset[
-      "delivery_cost"
-    ];
     return (
       <BrowserRouter basename="">
+        <OwnerData url={apiRoutes.owner_data} storedKey={OWNER_KEY} />
+        <MenuData
+          storedTypeKey={SHOWCASE_TYPES_KEY}
+          urlType={apiRoutes.types_data}
+          storedProdKey={SHOWCASE_PRODUCT_KEY}
+          urlProd={apiRoutes.products_data}
+        />
         <Switch>
           <Route exact path={INDEX} component={MainPage} />
 
@@ -57,7 +71,7 @@ class App extends Component {
               goBack={INDEX}
               goCart={DELIVERY_CART}
               mode={DELIVERY_MODE}
-              shipping={parseFloat(deliveryCost)}
+              // shipping={parseFloat(deliveryCost)}
               interactive={true}
             />
           </Route>
@@ -67,7 +81,7 @@ class App extends Component {
               goBack={INDEX}
               goCart={TAKEAWAY_CART}
               mode={TAKEAWAY_MODE}
-              shipping={0.0}
+              //shipping={0.0}
               interactive={true}
             />
           </Route>

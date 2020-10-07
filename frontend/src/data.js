@@ -19,18 +19,17 @@ export function getStoredState(key, time = DAY_IN_MS) {
   // Get the state stored in localStorage
   let storedState = getData(key);
   // If there is no state stored return
-  if (!storedState)
-    return {
-      update: false,
-      last_modified: Date.now(),
-    };
+  if (!storedState) return {
+    update: false,
+    last_modified: 0,
+  };
   // Check the time for data
   const t_now = Date.now();
   const { last_modified } = storedState;
   if (t_now - last_modified > time)
     return {
       update: false,
-      last_modified: Date.now(),
+      last_modified: 0,
     };
   // Else return the state stored
   return {

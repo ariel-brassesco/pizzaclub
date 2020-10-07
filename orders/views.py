@@ -3,35 +3,31 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.utils.encoding import uri_to_iri, iri_to_uri
 
-
 # Define constants
 DELIVERY_MODE = 'delivery'
-
-# Create your views here.
-def index(request):
-    return render(request, 'orders/index.html')
-#    return HttpResponseRedirect(reverse('registration:login'))
-
-def profile_employee(request):
-    user = request.user
-    if user.is_authenticated and user.is_order_manager():
-        return render(request, 'orders/profile_employee.html', {'usuario': request.user.first_name})
-    return HttpResponseRedirect(reverse('orders:main_page'))
-
-def profile_client(request):
-    return render(request, 'orders/index.html', {'usuario': request.user.first_name})
-
 
 # DEFINE REST API FUNCTIONS
 # Import modules
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from .models import Product, PriceList, Place, TypeProduct, Order, OrderItem
-from .serializers import ProductSerializer, PriceSerializer, OwnerSerializer, TypeSerializer
 from registration.models import Address, Client
+from .serializers import (
+    ProductSerializer,
+    PriceSerializer,
+    PriceListSerializer,
+    OwnerSerializer,
+    TypeSerializer,
+    OrderSerializer,
+    OrderItemSerializer
+)
+
+from registration.serializers import ClientSerializer
+
 
 # Define view functions
 @api_view(['GET'])
@@ -69,138 +65,111 @@ def get_owner(request):
     """
     if request.method == 'GET':
         # Get the first entry
-        print('Request Data')
         owner = Place.objects.first()
         #serialize the data
         serializer = OwnerSerializer(owner)
         return Response(serializer.data)
     return Response([], status=status.HTTP_400_BAD_REQUEST)
 
-def validate_client(data, delivery_mode):
-    name = data.get('name')
-    phone = data.get('phone')
-    email = data.get('email')
-    address = data.get('address')
-    delivery = (delivery_mode == DELIVERY_MODE) and address if (delivery_mode == DELIVERY_MODE) else True
-    return all([name, phone, email, delivery])
+# CRUD for orders
+class OrderViewSet(ModelViewSet):
+    """
+    A simple ViewSet for viewing and editing accounts.
+    """
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
 
-def validate_cart(data):
-    return len(data.get('items')) > 0
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == 'delete':
+            permission_classes = [IsAdmin]
+        elif self.action == 'make_order':
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.perform_delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-def create_whatsapp_url(client, order, address, place):
-    # Place Data
-    place_name = place.name.title()
-    place_address = place.address.address.title()
-    whatsapp = 'https://wa.me/541134205675'
-    #whatsapp = place.whatsapp
-    # Client Data
-    name = client.name.title()
-    comment = order.comment.strip()
-    # Cart Data
-    data_item = ''
-    for item in order.items.select_related():
-        item_size = f', {item.product.size} ' if item.product.size else ''
-        item_presentation = f', {item.product.presentation} ' if item.product.presentation else ''
-        data_item += (
-            f"- {item.quantity} x {item.product.product.name}"
-            f"{item_size}{item_presentation} (${item.total})\n")
-    # Delivery and Intro Data
-    if order.delivery_mode == DELIVERY_MODE:
-        data_delivery = f"- {order.delivery_mode.title()} ($ {order.shipping.cost})\n"
-        data_intro = f"Soy *{name}* y quiero hacer el siguiente pedido hacia *{address.address}*:\n"
-    else:
-        data_delivery = ''
-        data_intro = (
-            f"Soy *{name}* y quiero hacer el siguiente pedido para retirar por el local "
-            f"en {place_address}:\n")
-    # Get the url
-    url = (
-        f"{whatsapp}?text=Hola 🍕*{place_name}*🍕!\n"
-        f"{data_intro}"
-        f"{data_item}"
-        f"{data_delivery}"
-        f"*Total: ${order.total}*\n"
-        f"Comentario: {comment}\n"
-        f"Muchas gracias!\n"
-        f"Orden N°: {order.order}")
-    return iri_to_uri(url)
+    def perform_create(self, serializer):
+        return serializer.save()
 
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def make_order(request):
-    if request.method == 'POST':
-        #Get the data
-        client = request.data.get('client')
-        cart = request.data.get('cart')
-        # Check the data is correct
-        check_client = validate_client(client, cart.get('mode'))
-        check_cart = validate_cart(cart)
-
-        if not (check_client and check_cart): return JsonResponse({'success': False, 'error': 'Some Data is invalid'})
-        # Client Data
-        name, phone = client.get('name').strip(), client.get('phone').strip()
-        email, address = client.get('email').strip(), client.get('address')
-        comment = client.get('comment').strip() if client.get('comment') else ''
-        # Cart Data
-        order_type = cart.get('order_type')
-        delivery_mode = cart.get('mode')
-        items = cart.get('items')
-        # Load the data in database
-        # Load the address if needed
-        if delivery_mode == DELIVERY_MODE:
-            try: 
-                address = Address.objects.get(address=address)
-            except Address.DoesNotExist:
-                address = Address.objects.create(address=address)
-        else: 
-            address = None
-        # Load Client
-        try:
-            client_db = Client.objects.get(
-                name=name,
-                phone=phone,
-                email=email)
-            if address: client_db.address.add(address)
-        except Client.DoesNotExist:
-            print(address)
-            client_db = Client.objects.create(
-                name=name,
-                phone=phone,
-                email=email)
-            if address: client_db.address.add(address)
-        # Load the Order
-        order = Order.objects.create(
-            order_type=order_type,
-            client=client_db,
-            employee=None,
-            status='pending',
-            table=None,
-            delivery_mode=delivery_mode,
-            comment=comment)
-        # Load Items
-        total = 0
+    @action(detail=True, methods=['post'])
+    def make_order(self, request):
+        place_id = request.data.pop('owner_id')
+        items = request.data.pop('items')
+        request.data['items'] = []
+        # Find the price list and pass the serialize data
         for item in items:
-            try:
-                product = item['product']['id']
-                size, presentation = item.get('size'), item.get('presentation')
-                quantity = item.get('quantity')
-                price = PriceList.objects.get(
-                    product=product,
-                    size=size,
-                    presentation=presentation)
-                order_item = OrderItem.objects.create(
-                    order=order,
-                    product=price,
-                    quantity=quantity,
-                    )
-            except:
-                return JsonResponse({'success': False, 'error': 'Some Item is invalid'})
-        # Save order to set total value
-        order.save()
-        # Return the WhatsApp URL
-        place = Place.objects.first()
-        return JsonResponse({
-            'success': True,
-            'url': create_whatsapp_url(client_db, order, address, place)
+            quantity = item.pop('quantity')
+            price_list = PriceList.objects.get(**item)
+            #price_serializer = PriceListSerializer(instance=price_list)
+            request.data['items'].append({
+                'product': price_list.pk,
+                'quantity': quantity
             })
-    return JsonResponse({'success': False})
+        # Get the delivery address if there is
+        delivery_address = request.data.pop('delivery_address', None)
+        if delivery_address:
+            try: 
+                address = Address.objects.create(address=delivery_address)
+            except:
+                address = Address.objects.get(address=delivery_address)
+            request.data['delivery_address'] = address.id
+        else: 
+            address=None
+        # Get the client
+        client_data = request.data.get('client')
+        try:
+            client = Client.objects.get(**client_data)
+        except Client.DoesNotExist:
+            client = Client.objects.create(**client_data)
+        if address: client.address.add(address)
+        # Save Client id in request.data
+        request.data['client'] = client.id
+        #Create the order
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        order = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        # Create URL
+        place = Place.objects.get(id=place_id)
+        url = self.create_url_whatsapp(client, order, place)
+        return Response({'url': url}, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def create_url_whatsapp(self, client, order, place):
+        # Cart Data
+        data_item = ''
+        for item in order.items.select_related():
+            item_size = f', {item.product.size} ' if item.product.size else ''
+            item_presentation = f', {item.product.presentation} ' if item.product.presentation else ''
+            data_item += (
+                f"- {item.quantity} x {item.product.product.name}"
+                f"{item_size}{item_presentation} (${item.total})\n")
+        # Delivery and Intro Data
+        if order.delivery_mode == DELIVERY_MODE:
+            data_delivery = f"- {order.delivery_mode.title()} ($ {order.shipping.cost})\n"
+            data_intro = (
+                f"Soy *{client.name.title()}* y quiero hacer el siguiente pedido hacia"
+                f" *{order.delivery_address.address.title()}*:\n")
+        else:
+            data_delivery = ''
+            data_intro = (
+                f"Soy *{client.name.title()}* y quiero hacer el siguiente pedido para retirar por el local"
+                f"en {place.address.address.title()}:\n")
+        # Get the url
+        url = (
+            f"{place.whatsapp}?text=Hola 🍕 *{place.name.title()}* 🍕!\n"
+            f"{data_intro}"
+            f"{data_item}"
+            f"{data_delivery}"
+            f"*Total: ${order.total}*\n"
+            f"Comentario: {order.comment.strip()}\n"
+            f"Muchas gracias!\n"
+            f"Orden N°: {order.order}")
+        return iri_to_uri(url)

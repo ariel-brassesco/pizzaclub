@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, RelatedField
+from rest_framework.serializers import ModelSerializer, RelatedField, PrimaryKeyRelatedField
 from .models import (
     Product,
     PriceList,
@@ -7,9 +7,13 @@ from .models import (
     SizeProduct,
     PresentationProduct,
     FeatureProduct,
-    Place
+    Place,
+    Order,
+    OrderItem,
+    Shipping
     )
-from registration.models import Address
+from registration.models import Client, Address
+from registration.serializers import ClientSerializer
 
 class ExtraFieldsSerializer(ModelSerializer):
     '''
@@ -31,16 +35,22 @@ class ExtraFieldsSerializer(ModelSerializer):
 #     def to_representation(self, value):
 #         return value.logo.url
 
+class ShippingSerializer(ExtraFieldsSerializer):
+    class Meta:
+        model = Shipping
+        fields = '__all__'
+
 class AddressSerializer(ExtraFieldsSerializer):
     class Meta:
         model = Address
-        fields = '__all__' 
+        fields = '__all__'
 
 class OwnerSerializer(ExtraFieldsSerializer):
     '''
         Serializer of Place Class.
     '''
-    address = AddressSerializer(read_only=True)
+    address = AddressSerializer()
+    shipping = ShippingSerializer(many=True)
     class Meta:
         model = Place
         fields = (
@@ -49,7 +59,8 @@ class OwnerSerializer(ExtraFieldsSerializer):
             'instagram',
             'whatsapp',
             'phone',
-            'address'
+            'address',
+            'shipping'
         )
 
 class SubTypeSerializer(ExtraFieldsSerializer):
@@ -115,7 +126,43 @@ class ProductSerializer(ExtraFieldsSerializer):
     presentation = PresentationSerializer(many=True, read_only=True)
     feature = FeatureSerializer(many=True, read_only=True)
     prices = PriceSerializer(many=True, read_only=True)
+    place = OwnerSerializer()
 
     class Meta:
         model = Product
         fields = '__all__'
+
+class PriceListSerializer(ExtraFieldsSerializer):
+    '''
+        Serialize the data of price list.
+    '''
+    class Meta:
+        model = PriceList
+        fields = '__all__'
+
+class OrderItemSerializer(ModelSerializer):
+    class Meta:
+        model = OrderItem
+        exclude = ['order']
+
+class OrderSerializer(ModelSerializer):
+    items = OrderItemSerializer(many=True)
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def create(self, validated_data):
+        """
+        Create and return a new `OrderItem` instance, given the validated data.
+        """
+        client = validated_data.pop('client', None)
+        items_data = validated_data.pop('items', [])
+        # Create the Order
+        order = Order.objects.create(client=client, **validated_data)
+        # Create and add items
+        for item in items_data:
+            OrderItem.objects.create(order=order, **item)
+        # Save order for calculated Total
+        order.save()
+        return order
+

@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
+from django.utils import timezone
 
 from pizzaclub.settings import MAX_CUIL_LENGTH, MIN_CUIL_LENGTH
 from pizzaclub.settings import MAX_PHONE_LENGTH, MIN_PHONE_LENGTH
@@ -110,11 +111,50 @@ class ProductImages(models.Model):
         self.image.name = '/'.join([str(self.product.id), str(uuid.uuid4().hex + extension)])
         super(ProductImages, self).save(*args, **kwargs)
 """
+class Shipping(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+    cost = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return str(self.cost)
+
+class Place(models.Model):
+    name = models.CharField(max_length=30)
+    email = models.EmailField()
+    instagram = models.URLField()
+    whatsapp = models.URLField()
+    cuil = models.CharField(
+        max_length=MAX_CUIL_LENGTH,
+        unique=True,
+        validators=[
+            MinLengthValidator(MIN_CUIL_LENGTH),
+            MaxLengthValidator(MAX_CUIL_LENGTH),
+            RegexValidator(regex=r'^\d+$')
+        ])
+    phone = models.CharField(
+        max_length=MAX_PHONE_LENGTH,
+        null=True,
+        blank=True,
+        validators=[
+            MinLengthValidator(MIN_PHONE_LENGTH),
+            MaxLengthValidator(MAX_PHONE_LENGTH),
+            RegexValidator(regex=r'^\d+$')
+        ])
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
+    shipping = models.ManyToManyField(Shipping, related_name='place')
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     '''
     This models save the data of products and the relation
     with characteristic's tables, like SizeProduct.
     '''
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
     order_n = models.PositiveSmallIntegerField(default=0)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100, blank=True)
@@ -208,43 +248,6 @@ class PriceList(models.Model):
         if not self.product.is_active: self.is_active = False
         super(PriceList, self).save(*args, **kwargs)
 
-class Place(models.Model):
-    name = models.CharField(max_length=30)
-    email = models.EmailField()
-    instagram = models.URLField()
-    whatsapp = models.URLField()
-    cuil = models.CharField(
-        max_length=MAX_CUIL_LENGTH,
-        unique=True,
-        validators=[
-            MinLengthValidator(MIN_CUIL_LENGTH),
-            MaxLengthValidator(MAX_CUIL_LENGTH),
-            RegexValidator(regex=r'^\d+$')
-        ])
-    phone = models.CharField(
-        max_length=MAX_PHONE_LENGTH,
-        null=True,
-        blank=True,
-        validators=[
-            MinLengthValidator(MIN_PHONE_LENGTH),
-            MaxLengthValidator(MAX_PHONE_LENGTH),
-            RegexValidator(regex=r'^\d+$')
-        ])
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
-class Shipping(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
-    cost = models.FloatField(default=0.0)
-
-    def __str__(self):
-        return str(self.cost)
-
 class Order(models.Model):
     STATUS_CHOICES = [
         ('shipping', 'shipping'),
@@ -274,16 +277,23 @@ class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True)
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     table = models.PositiveSmallIntegerField(null=True)
     delivery_mode = models.CharField(max_length=8, choices=DELIVERY_CHOICES)
+    delivery_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
     shipping = models.ForeignKey(Shipping, on_delete=models.SET_NULL, null=True)
-    #is_shipping = models.BooleanField(default=False)
     comment = models.TextField(blank=True, null=True)
     total = models.FloatField(default=0)
+    is_delete = models.BooleanField(default=False)
+    date_delete = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.order)
+
+    def perform_delete(self):
+        self.is_delete = True
+        self.date_delete = timezone.now()
+        self.save()
 
     def save(self, *args, **kwargs):
         # Set the value of shipping
@@ -298,14 +308,10 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    #product = models.CharField(max_length=100)
     product = models.ForeignKey(PriceList, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     unitary_price = models.FloatField(default=0)
-    #unitary_cost = models.FloatField(default=0)
-    #margen = models.FloatField(default=0)
     discount = models.FloatField(default=0.0)
-    #total_cost = models.FloatField(default=0)
     total = models.FloatField(default=0)
     
     def __str__(self):

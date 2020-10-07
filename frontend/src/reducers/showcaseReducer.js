@@ -13,7 +13,7 @@ import {
   UPDATE_TYPES_STORED,
 } from "../actions/actionsShowcase";
 // Import auxiliar functions
-import { getStoredState, saveData, getData } from "../data";
+import { saveData, getData } from "../data";
 // Import Constants
 import { SHOWCASE_PRODUCT_KEY, SHOWCASE_TYPES_KEY } from "../constants";
 
@@ -25,8 +25,14 @@ import { SHOWCASE_PRODUCT_KEY, SHOWCASE_TYPES_KEY } from "../constants";
 */
 
 // Define Initial States for products and types update
-const INITIAL_PRODUCTS_STATE = getStoredState(SHOWCASE_PRODUCT_KEY);
-const INITIAL_TYPES_STATE = getStoredState(SHOWCASE_TYPES_KEY);
+const INITIAL_PRODUCTS_STATE = {
+  update: false,
+  last_modified: 0
+};
+const INITIAL_TYPES_STATE = {
+  update: false,
+  last_modified: 0
+};
 
 // Define the state reducer of products, for update from localStorage
 // or fetch data from server
@@ -48,7 +54,7 @@ function prodStatusReducer(state = INITIAL_PRODUCTS_STATE, action) {
         data: [],
         pending: false,
         update: false,
-        last_modified: Date.now(),
+        last_modified: 0,
       });
       return { ...state, update: false };
     case UPDATE_PRODUCTS_STORED:
@@ -81,7 +87,7 @@ function typeStatusReducer(state = INITIAL_TYPES_STATE, action) {
         data: [],
         pending: false,
         update: false,
-        last_modified: Date.now(),
+        last_modified: 0,
       });
       return { ...state, update: false };
     case UPDATE_TYPES_STORED:
