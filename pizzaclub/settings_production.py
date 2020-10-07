@@ -2,7 +2,7 @@ import os
 from .settings import BASE_DIR
 
 
-ALLOWED_HOSTS = ['pizzaclub.herokuapp.com', '.tustore.app']
+ALLOWED_HOSTS = ['thepizzaclub.herokuapp.com', '.tustore.app']
 
 # Application definition
 
