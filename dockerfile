@@ -10,15 +10,16 @@ ARG MINIO_STORAGE_ACCESS_KEY=${MINIO_STORAGE_ACCESS_KEY}
 ARG MINIO_STORAGE_SECRET_KEY=${MINIO_STORAGE_SECRET_KEY}
 ARG MINIO_STORAGE_BUCKET_NAME=${MINIO_STORAGE_BUCKET_NAME}
 
-RUN mkdir -p /usr/src/app
-RUN mkdir -p /usr/src/app/staticfiles
-WORKDIR /usr/src/app
+RUN mkdir -p /src
+RUN mkdir -p /src/staticfiles
+RUN touch /src/.env
+WORKDIR /src
 
-COPY ./requirements.txt /usr/src/app/
+COPY ./requirements.txt /src/
 RUN pip install --no-cache-dir -r requirements.txt
-COPY ./ /usr/src/app
+COPY ./ /src
 
 EXPOSE 80
 
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
-CMD ["gunicorn", "pizzaclub.wsgi:application", "--bind", "0.0.0.0:80"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
+# CMD ["gunicorn", "pizzaclub.wsgi:application", "--bind", "0.0.0.0:80"]
