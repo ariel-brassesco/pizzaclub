@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'gdstorage',
+    'minio_storage',
     'corsheaders',
 ]
 
@@ -43,11 +43,6 @@ DATABASES = {
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
-# Google Drive Storage Settings
-GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = None
-GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS = os.getenv('GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE_CONTENTS')
-GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = 'pizzaclub/media'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

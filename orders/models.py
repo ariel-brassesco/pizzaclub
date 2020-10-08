@@ -6,10 +6,9 @@ from django.utils import timezone
 from pizzaclub.settings import MAX_CUIL_LENGTH, MIN_CUIL_LENGTH
 from pizzaclub.settings import MAX_PHONE_LENGTH, MIN_PHONE_LENGTH
 from registration.models import Employee, Client, Address
-from gdstorage.storage import GoogleDriveStorage
+from minio_storage.storage import MinioMediaStorage
 
-# Define Google Drive Storage
-gd_storage = GoogleDriveStorage()
+storage = MinioMediaStorage()
 # Create your models here.
 
 class SizeProductError(Exception):
@@ -95,7 +94,7 @@ class FeatureProduct(models.Model):
 class ProductImages(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to="products/", storage=gd_storage)
+    image = models.ImageField(upload_to="products/", storage=storage)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -158,7 +157,7 @@ class Product(models.Model):
     order_n = models.PositiveSmallIntegerField(default=0)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to="products/", storage=gd_storage)
+    image = models.ImageField(upload_to="products/", storage=storage)
     types = models.ForeignKey(TypeProduct, on_delete=models.CASCADE)
     subtype = models.ForeignKey(SubTypeProduct, on_delete=models.SET_NULL, null=True, blank=True)
     presentation = models.ManyToManyField(PresentationProduct, blank=True)
