@@ -28,7 +28,7 @@ urlpatterns = [
     path("types/", views.get_types),
     path("owner/", views.get_owner),
     # path("orders/new_order/", views.make_order),
-    path("orders/", order_list),
-    path("orders/<int:pk>/", order_detail),
-    path("orders/whatsapp/", order_whatsapp)
+    path("<int:pk>/", order_detail),
+    path("whatsapp/", order_whatsapp),
+    path("", order_list),
 ]

@@ -36,7 +36,7 @@ export const apiRoutes = {
   login: "/api-token-auth/",
   me: "/accounts/me",
   order_whatsapp: "/orders/whatsapp/",
-  owner_data: "/owner/",
-  types_data: "/types/",
-  products_data: "/products/",
+  owner_data: "/orders/owner/",
+  types_data: "/orders/types/",
+  products_data: "/orders/products/",
 };
