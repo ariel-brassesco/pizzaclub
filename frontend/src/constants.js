@@ -8,10 +8,10 @@ export const SHOWCASE_TYPES_KEY = "typesState";
 export const CART_KEY = "cart";
 
 // Define API URLs
-export const URL_API_OWNER = "/api/owner/";
-export const URL_API_TYPES = "/api/types/";
-export const URL_API_PRODUCTS = "/api/products/";
-export const URL_API_MAKE_ORDERS = "/api/orders/new_order/";
+export const URL_API_OWNER = "/owner/";
+export const URL_API_TYPES = "/types/";
+export const URL_API_PRODUCTS = "/products/";
+export const URL_API_MAKE_ORDERS = "/orders/new_order/";
 
 //Define Shipping Cost
 export const DELIVERY_MODE = "delivery";
