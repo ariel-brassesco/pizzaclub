@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang='es' prefix="og:https://ogp.me/ns/website#">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+        <!-- Title of page -->
+        <title>The Pizza Club SF</title>
+        <link rel="shortcut icon" href="{% static 'frontend/images/logo.png' %}" type="image/x-icon">
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image"></meta>
+        <meta name="twitter:site" content="@thepizzaclubsf" />
+        <meta name="twitter:creator" content="@thepizzaclubsf" />
+        <!-- Open Graph-->
+        <meta property="og:title" content="The Pizza Club SF" />
+        <meta property="og:type" content="website" />
+        <meta property="og:description" 
+            content="Un Club de Amigos para compartir Pizzas y Birras!!" />
+        <meta property="og:url" content="https://thepizzaclub.herokuapp.com/" />
+        <meta property="og:image" content="{% static 'frontend/images/logo.png' %}" />
+        <meta property="og:image:width" content="128" />
+        <meta property="og:image:height" content="128" />
+        {% comment %}
+        <!-- Verification -->
+        <meta property="fb:app_id" content="1316144618751955" />
+        <meta name="facebook-domain-verification" content="croupxrq72yfu6ytr86ayqf2ntb6gw" />
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Chewy&family=Dancing+Script:wght@700&family=Josefin+Sans:wght@200;300;400;500;700&family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Roboto:ital,wght@0,300;0,400;0,900;1,300;1,400;1,900&display=swap" rel="stylesheet">
+        {% endcomment %}
+        
+        <!-- CSS External -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static 'orders/css/normalize.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/general.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/mainpage.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/menupage.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/header.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/menu.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/cart.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/handlers.css' %}">
+        
+        <!-- External js Files -->
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        {%comment%}
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+        {%endcomment%}
+    </head>
+    <body>
+        <div id="app" data-logo="{% static 'frontend/images/logo.png' %}"
+        data-delivery_cost="{{DELIVERY_COST}}">
+            <!-- React will load here -->
+        </div>
+
+        <script src="{% static 'frontend/js/main.js'%}"></script>
+    </body>
+</html>

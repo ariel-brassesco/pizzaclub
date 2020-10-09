@@ -17,48 +17,49 @@ import {
 } from "../actions/actionsShowcase";
 // Import getters
 import {
-  getProductsError,
-  getProductsPending,
-  getProductsUpdate,
-  getTypesPending,
-  getTypesError,
-  getTypesUpdate,
-} from "../reducers/showcaseReducer";
+    getProductsError,
+    getProductsPending,
+    getProductsUpdate,
+    getTypesPending,
+    getTypesError,
+    getTypesUpdate
+} from '../reducers/showcaseReducer';
 // Import Constants 
 import {SHOWCASE_PRODUCT_KEY, SHOWCASE_TYPES_KEY} from '../constants';
 // Import functions
 import {getStoredState} from '../data';
 
 class ShowcaseData extends Component {
-  componentDidMount() {
-    const { pendingProd, errorProd, storedProdKey } = this.props;
-    const { pendingType, errorType , storedTypeKey } = this.props;
-    const {
-      updateProdData,
-      updateTypeData,
-      fetchProducts,
-      fetchTypes,
-    } = this.props;
-    
-    const {update: updateProd}= getStoredState(SHOWCASE_PRODUCT_KEY);
-    const {update: updateType} = getStoredState(SHOWCASE_TYPES_KEY);
-    // Check if products data has to be fetching or updating from localStorage
-    if (updateProd && !errorProd) {
-      console.log("Update Products from localStorage");
-      updateProdData(storedProdKey);
-    } else {
-      if (!pendingProd) fetchProducts();
-      console.log("Fetch Products Data");
+
+    componentDidMount(){
+        const { pendingProd, errorProd, storedProdKey } = this.props;
+        const { pendingType, errorType , storedTypeKey } = this.props;
+        const {
+          updateProdData,
+          updateTypeData,
+          fetchProducts,
+          fetchTypes,
+        } = this.props;
+        
+        const {update: updateProd}= getStoredState(SHOWCASE_PRODUCT_KEY);
+        // Check if products data has to be fetching or updating from localStorage
+        if (updateProd && !errorProd) {
+          console.log('Update Products from localStorage');
+          updateProdData(storedProdKey);
+        } else {
+          if (!pendingProd) fetchProducts();
+          console.log('Fetch Products Data');
+        }
+        // Check if types data has to be fetching or updating from localStorage
+        const {update: updateType} = getStoredState(SHOWCASE_TYPES_KEY);
+        if (updateType && !errorType) {
+          console.log('Update Types from localStorage');
+          updateTypeData(storedTypeKey);
+        } else {
+          if (!pendingType) fetchTypes();
+          console.log('Fetch Types Data');
+        }
     }
-    // Check if types data has to be fetching or updating from localStorage
-    if (updateType && !errorType) {
-      console.log("Update Types from localStorage");
-      updateTypeData(storedTypeKey);
-    } else {
-      if (!pendingType) fetchTypes();
-      console.log("Fetch Types Data");
-    }
-  }
 
   render() {
     return null;

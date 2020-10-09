@@ -27,46 +27,45 @@ class Menu extends Component {
   _resetInput = () => this.setState({ inputSearch: "" });
 
   render() {
-    const { types, products, interactive, cartItems } = this.props;
-    const { addToCart, removeToCart, plusQuantity, minusQuantity } = this.props;
-    const { inputSearch } = this.state;
+    const {types, products, interactive, cartItems} = this.props;
+    const {addToCart, removeToCart, plusQuantity, minusQuantity} = this.props;
+    const {inputSearch} = this.state;
     return (
-      <div className="menu">
-        <SearchProduct
-          value={inputSearch}
-          handleChange={this._handleChange}
-          resetInput={this._resetInput}
-        />
-        {types.map((t) => {
-          let prod = products.filter(
-            (p) =>
-              p.types == t.id &&
-              p.name.includes(inputSearch.trimEnd().toLowerCase())
-          );
-          return (
-            <TypeProduct key={t.id} id={t.id} name={t.name} subtype={t.subtype}>
-              {/* Pass the product as children */}
-              {prod.map((p) => {
-                //Pass the item of product if there is in the cart
-                let item = cartItems.filter((i) => i.product.id == p.id);
-                return (
-                  <Product
-                    key={p.id}
-                    interactive={interactive}
-                    data={p}
-                    item={item}
-                    {...{
-                      addToCart,
-                      removeToCart,
-                      plusQuantity,
-                      minusQuantity,
-                    }}
-                  />
-                );
-              })}
-            </TypeProduct>
-          );
-        })}
+      <div className='menu'>
+          <SearchProduct value={inputSearch}
+                          handleChange={this._handleChange}
+                          resetInput={this._resetInput}/>
+          {types.map(t => {
+              let prod = products.filter( p => 
+                                          p.types == t.id
+                                          && p.name.includes(inputSearch.trimEnd().toLowerCase()));
+              return (
+              <TypeProduct key={t.id}
+                          id={t.id}
+                          name={t.name} 
+                          subtype={t.subtype}>
+                  {/* Pass the product as children */}
+                  {prod.map(p => {
+                      //Pass the item of product if there is in the cart
+                      let item = cartItems.filter(i => i.product.id == p.id);
+                      return (
+                          <Product key={p.id}
+                                  interactive={interactive}
+                                  data={p}
+                                  item={item}
+                                  typeName={t.name}
+                                  {...{
+                                      addToCart,
+                                      removeToCart,
+                                      plusQuantity,
+                                      minusQuantity
+                                  }}/>
+                          )
+                      })
+                  }
+              </TypeProduct>
+              )
+          })}
       </div>
     );
   }

@@ -158,7 +158,7 @@ class Product(models.Model):
     order_n = models.PositiveSmallIntegerField(default=0)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to="products/", storage=gd_storage)
+    image = models.ImageField(upload_to="products/", storage=gd_storage, blank=True, null=True)
     types = models.ForeignKey(TypeProduct, on_delete=models.CASCADE)
     subtype = models.ForeignKey(SubTypeProduct, on_delete=models.SET_NULL, null=True, blank=True)
     presentation = models.ManyToManyField(PresentationProduct, blank=True)
@@ -248,6 +248,46 @@ class PriceList(models.Model):
         if not self.product.is_active: self.is_active = False
         super(PriceList, self).save(*args, **kwargs)
 
+<<<<<<< HEAD
+=======
+class Place(models.Model):
+    name = models.CharField(max_length=30)
+    email = models.EmailField()
+    instagram = models.URLField()
+    whatsapp = models.URLField()
+    cuil = models.CharField(
+        max_length=MAX_CUIL_LENGTH,
+        unique=True,
+        validators=[
+            MinLengthValidator(MIN_CUIL_LENGTH),
+            MaxLengthValidator(MAX_CUIL_LENGTH),
+            RegexValidator(regex=r'^\d+$')
+        ])
+    phone = models.CharField(
+        max_length=MAX_PHONE_LENGTH,
+        null=True,
+        blank=True,
+        validators=[
+            MinLengthValidator(MIN_PHONE_LENGTH),
+            MaxLengthValidator(MAX_PHONE_LENGTH),
+            RegexValidator(regex=r'^\d+$')
+        ])
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+class Shipping(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+    cost = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return str(self.cost)
+
+>>>>>>> master
 class Order(models.Model):
     STATUS_CHOICES = [
         ('shipping', 'shipping'),
