@@ -35,8 +35,8 @@ export const http = new Http();
 export const apiRoutes = {
   login: "/api-token-auth/",
   me: "/accounts/me",
-  order_whatsapp: "api/orders/whatsapp/",
-  owner_data: "api/owner/",
-  types_data: "api/types/",
-  products_data: "api/products/",
+  order_whatsapp: "/orders/whatsapp/",
+  owner_data: "/orders/owner/",
+  types_data: "/orders/types/",
+  products_data: "/orders/products/",
 };
