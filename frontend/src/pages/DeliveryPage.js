@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Import Actions
-import { setDelivery } from "../actions/actionsCart";
+import { setDeliveryMode } from "../actions/actionsCart";
 // Import Containers
 import Menu from '../containers/Menu';
 // Import Components
@@ -11,6 +11,11 @@ import {GoToCart} from '../components/Cart';
 import {PlaceHeader} from '../components/Place';
 
 class DeliveryPage extends Component {
+    
+    componentDidMount() {
+        const { mode, setDelivery } = this.props;
+        setDelivery(mode, {id: 0, cost: 0.0});
+    }
 
     render() {
         const {goBack, goCart, interactive} = this.props;
@@ -33,7 +38,7 @@ class DeliveryPage extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     setDelivery: (mode, shipping) =>
-      dispatch(setDelivery(mode, shipping)),
+      dispatch(setDeliveryMode(mode, shipping)),
   };
 };
 

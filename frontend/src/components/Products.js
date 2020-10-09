@@ -3,71 +3,66 @@ import React, { Component } from "react";
 // Import Components
 import { Image } from "../components/Common";
 export class TypeProduct extends Component {
-    state ={
-        show: true,
-    }
+  state ={
+      show: true,
+  }
 
-    hideProducts = () => {
-        const {show} = this.state; 
-        this.setState({show: !show})
-    }
+  hideProducts = () => {
+      const {show} = this.state; 
+      this.setState({show: !show})
+  }
 
-    render() {
-        // const {name, id, products, subtype} = this.props;
-        const {name, id, children, subtype} = this.props;
-        const {show} = this.state;
+  render() {
+    const {name, id, children, subtype} = this.props;
+    const {show} = this.state;
 
-        // const prod = (subtype.length > 0)
-        //                 ?subtype.map(s => <SubTypeProduct key={s.id} {...s} products={products}/>)
-        //                 :products.map(p => <Product key={p.id} {...p} />)
-        return (
-            <div className="product-type" data-id={id}>
-                <div className="product-type-title" 
-                    onClick={this.hideProducts}>
-                    <div>
-                        <span className="icon is-large main-option--icon">
-                            <i className="fas fa-lg fa-book-open"></i>
-                        </span>
-                        <span>{name}</span>
-                    </div>
-                    
-                    <span className={(show)?"icon":"icon rotate-cc-90"}>
-                        <i className="fas fa-caret-down"></i>
-                    </span>
-                </div>
-                <div className={(show)?'product-shower':'inactive'}>
-                    {/* {prod} */}
-                    {children}
-                </div>
-            </div>
-        );
-    }
-}
-
-export const SubTypeProduct = (props) => {
-  const {products, name, id} = props;
-  const prod = products.filter(p => p.subtype == id);
-  return (
-    <div className="product-type" data-id={id}>
-      <div className="product-type-title" onClick={this.hideProducts}>
-        <div>
-          <span className="icon main-option--icon">
-            <i className="fas fa-book-open"></i>
+    return (
+      <div className="product-type" data-id={id}>
+        <div className="product-type-title" 
+          onClick={this.hideProducts}>
+          <div>
+            <span className="icon is-large main-option--icon">
+              <i className="fas fa-lg fa-book-open"></i>
+            </span>
+            <span>{name}</span>
+          </div>
+          
+          <span className={(show)?"icon":"icon rotate-cc-90"}>
+            <i className="fas fa-caret-down"></i>
           </span>
-          <span>{name}</span>
         </div>
-
-        <span className={show ? "icon" : "icon rotate-cc-90"}>
-          <i className="fas fa-caret-down"></i>
-        </span>
+        <div className={(show)?'product-shower':'inactive'}>
+          {children}
+        </div>
       </div>
-      <div className={show ? "product-shower" : "inactive"}>
-        {/* {prod} */}
-        {children}
-      </div>
-    </div>
-  );
+    );
+  }
 }
+
+// export const SubTypeProduct = (props) => {
+//   const {products, name, id} = props;
+//   const prod = products.filter(p => p.subtype == id);
+//   return (
+//     <div className="product-type" data-id={id}>
+//       <div className="product-type-title" onClick={this.hideProducts}>
+//         <div>
+//           <span className="icon main-option--icon">
+//             <i className="fas fa-book-open"></i>
+//           </span>
+//           <span>{name}</span>
+//         </div>
+
+//         <span className={show ? "icon" : "icon rotate-cc-90"}>
+//           <i className="fas fa-caret-down"></i>
+//         </span>
+//       </div>
+//       <div className={show ? "product-shower" : "inactive"}>
+//         {/* {prod} */}
+//         {children}
+//       </div>
+//     </div>
+//   );
+// }
 
 export function QuantityWidget (props) {
 
@@ -181,9 +176,9 @@ const ProductSizePriceView = (props) => {
         />
         <div className="product-card-sizes">
           {size.map((s) => {
-            let price = prices.filter((p) => p.size == s.id)[0];
+            let price = prices.filter((p) => p.size === s.id)[0];
             let i_id = genIds(id, s.id, null);
-            let counter = items.filter((i) => i.id == i_id)[0];
+            let counter = items.filter((i) => i.id === i_id)[0];
             counter = counter && interactive ? counter.quantity : null;
             return (
               <div key={s.id}>
@@ -231,9 +226,9 @@ const ProductPresentationPriceView = (props) => {
       </div>
       <div className="product-card-presentations">
         {presentation.map((pre) => {
-          let price = prices.filter((p) => p.presentation == pre.id)[0];
+          let price = prices.filter((p) => p.presentation === pre.id)[0];
           let i_id = genIds(id, null, pre.id);
-          let counter = items.filter((i) => i.id == i_id)[0];
+          let counter = items.filter((i) => i.id === i_id)[0];
           counter = counter && interactive ? counter.quantity : null;
           return (
             <div key={pre.id}>
@@ -298,9 +293,9 @@ const FullProductView = (props) => {
                     <div className='product-fullview-prices'>
                         {presentation.map(pre => {
                             let p_sizes = size.map(s =>{
-                                let price = prices.filter(p => p.size == s.id && p.presentation == pre.id)[0];
+                                let price = prices.filter(p => p.size === s.id && p.presentation === pre.id)[0];
                                 let i_id = genIds(id, s.id, pre.id);
-                                let counter = items.filter(i => i.id == i_id)[0];
+                                let counter = items.filter(i => i.id === i_id)[0];
                                 counter = (counter && interactive)?counter.quantity:null;
                                 return (
                                     <PriceTag key={s.id}
@@ -343,6 +338,7 @@ export class Product extends Component{
       presentation = (!presentation)?null:presentation;
       // Get the price for size and presentation
       let price = data.prices.filter(i => i.size == size && i.presentation == presentation)[0];
+
       return {
           id: item_id,
           product: data,
@@ -357,7 +353,7 @@ export class Product extends Component{
 
   _selectItem = (item_id) => {
     if (this.props.interactive) {
-      let item = this.props.item.filter((i) => i.id == item_id)[0];
+      let item = this.props.item.filter((i) => i.id === item_id)[0];
       this.setState({ selected: item_id });
       // If there is no item in cart, dispatch addToCart
       if (!item) {
@@ -370,13 +366,13 @@ export class Product extends Component{
   };
 
   _plusQuantity = (item_id) => {
-    let item = this.props.item.filter((i) => i.id == item_id)[0];
+    let item = this.props.item.filter((i) => i.id === item_id)[0];
     // Limit quantity to 9
     if (item.quantity <= 9) this.props.plusQuantity(item_id);
   };
 
   _minusQuantity = (item_id) => {
-    let item = this.props.item.filter((i) => i.id == item_id)[0];
+    let item = this.props.item.filter((i) => i.id === item_id)[0];
     // If quantity is zero, remove the item from cart
     if (item.quantity <= 1) {
       this.setState({ selected: null });
@@ -419,7 +415,7 @@ export class Product extends Component{
         );
       case "SIZE_PRICE_VIEW":
         selected = this.state.selected;
-        item_selected = item.filter((i) => i.id == selected);
+        item_selected = item.filter((i) => i.id === selected);
         quantity = item_selected.length ? item_selected[0].quantity : 0;
         widget = interactive && selected;
         return (
@@ -438,7 +434,7 @@ export class Product extends Component{
         );
       case "PRESENTATION_PRICE_VIEW":
         selected = this.state.selected;
-        item_selected = item.filter((i) => i.id == selected);
+        item_selected = item.filter((i) => i.id === selected);
         quantity = item_selected.length ? item_selected[0].quantity : 0;
         widget = interactive && selected;
         return (
@@ -458,7 +454,7 @@ export class Product extends Component{
 
       case "FULL_VIEW":
         selected = this.state.selected;
-        item_selected = item.filter((i) => i.id == selected);
+        item_selected = item.filter((i) => i.id === selected);
         quantity = item_selected.length ? item_selected[0].quantity : 0;
         widget = interactive && selected;
         return (

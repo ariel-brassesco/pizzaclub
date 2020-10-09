@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 
 // Import Actions
 import {
-  setDelivery,
+  setDeliveryMode,
   emptyCart
 } from "../actions/actionsCart";
 // Import Components
@@ -26,7 +26,7 @@ import { DELIVERY_MODE } from "../constants";
 class CartPage extends Component {
   componentDidMount() {
     const { mode, setDelivery, owner } = this.props;
-    if (mode == DELIVERY_MODE) setDelivery(mode, {
+    if (mode === DELIVERY_MODE) setDelivery(mode, {
       id: owner.shipping[0].id,
       cost: owner.shipping[0].cost
     });
@@ -42,7 +42,7 @@ class CartPage extends Component {
                     <Switch>
                         <Route path={path + goConfirm} render={()=> {
                             return [
-                            <FormCart key='form' {...{subtotal, total, shipping, mode, items, emptyCart}} />,
+                            <FormCart key='form' {...{shipping, mode, items, emptyCart, owner_id: owner.id}} />,
                             <GoToButton
                                 key='btn'
                                 path={path}
@@ -103,7 +103,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     emptyCart: () => dispatch(emptyCart()),
-    setDelivery: (mode, shipping) => dispatch(setDelivery(mode, shipping))
+    setDelivery: (mode, shipping) => dispatch(setDeliveryMode(mode, shipping))
   };
 };
 

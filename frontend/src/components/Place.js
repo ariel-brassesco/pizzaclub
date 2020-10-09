@@ -25,10 +25,10 @@ const Place = (props) => {
   }
   if (pending) return <div className="header-place">Loading...</div>;
   return (
-    <div className='header-place'>
-      <Image className='image header-logo'
-              imgClass=''
-              src={logo_src}
+    <div className="header-place">
+      <Image className="image header-logo"
+              imgClass=""
+              src="/images/logo.png"
               alt={data.name}
           />
       {/* <div className="header-owner-title">

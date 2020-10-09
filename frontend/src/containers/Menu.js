@@ -37,7 +37,7 @@ class Menu extends Component {
                           resetInput={this._resetInput}/>
           {types.map(t => {
               let prod = products.filter( p => 
-                                          p.types == t.id
+                                          p.types === t.id
                                           && p.name.includes(inputSearch.trimEnd().toLowerCase()));
               return (
               <TypeProduct key={t.id}
@@ -47,7 +47,7 @@ class Menu extends Component {
                   {/* Pass the product as children */}
                   {prod.map(p => {
                       //Pass the item of product if there is in the cart
-                      let item = cartItems.filter(i => i.product.id == p.id);
+                      let item = cartItems.filter(i => i.product.id === p.id);
                       return (
                           <Product key={p.id}
                                   interactive={interactive}

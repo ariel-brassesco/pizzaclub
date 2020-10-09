@@ -82,7 +82,7 @@ export const CustomField = ({field, form : {touched, errors }, ...props}) => (
   <div className='field'>
       {(props.label)?<label className="label is-large">{props.label}</label>:null}
       <div className='control'>
-          {(props.type == 'textarea')
+          {(props.type === 'textarea')
           ?<textarea type="text" className="input is-medium form-comment" {...field} {...props}></textarea>
           :<input type="text" className="input is-medium" {...field} {...props} />}          
       </div>

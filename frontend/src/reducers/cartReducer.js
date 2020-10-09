@@ -10,7 +10,7 @@ import {
   PLUS_ONE_QUANTITY_ITEM,
   MINUS_ONE_QUANTITY_ITEM,
   EMPTY_CART,
-  SET_DELIVERY
+  SET_DELIVERY_MODE
 } from "../actions/actionsCart";
 
 const INITIAL_CART_STATE = getData(CART_KEY)
@@ -31,6 +31,7 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
   let items = [];
   let quantity = 0;
   let subtotal = 0;
+  let total = 0;
 
   switch (action.type) {
     case ADD_CART_ITEM:
@@ -81,7 +82,7 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
     case EMPTY_CART:
       new_state = { ...state, items: [] };
       break;
-    case SET_DELIVERY:
+    case SET_DELIVERY_MODE:
       // Set the delivery mode
       let { mode, shipping } = action;
       new_state = { ...state, delivery: mode, shipping};
@@ -92,7 +93,7 @@ export function cartReducer(state = INITIAL_CART_STATE, action) {
   }
   // Calculate subtotal an total
   subtotal = new_state.items.reduce((c, a) => a.subtotal + c, 0);
-  let total = subtotal + new_state.shipping.cost;
+  total = subtotal + new_state.shipping.cost;
   // Update the new_state
   new_state = { ...new_state, subtotal, total };
   // Save the new_state in localStorage

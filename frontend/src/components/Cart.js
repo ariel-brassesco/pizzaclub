@@ -18,25 +18,14 @@ const PriceItem = ({
   text,
   decimalPlaces = 2,
 }) => {
+  console.log(typeof price);
   return (
     <div className={className}>
       <span className={classItem}>{text}</span>
-      <span className={classItem}>{`$ ${price.toFixed(decimalPlaces)}`}</span>
+      <span className={classItem}>{`$ ${parseFloat(price).toFixed(decimalPlaces)}`}</span>
     </div>
   );
 };
-
-// This component show a text and price y the format "text       $ price"
-// It's a div container with two span (one for text one for price)
-// Can pass the class for div and class for span, and the decimal places for price
-const PriceItem = ({className, classItem, price, text, decimalPlaces=2}) => {
-    return (
-        <div className={className}>
-            <span className={classItem}>{text}</span>
-            <span className={classItem}>{`$ ${price.toFixed(decimalPlaces)}`}</span>
-        </div>
-    )
-}
 
 export const CartItem = (props) => {
   const {typeName, size, presentation, quantity, subtotal, product} = props;
@@ -133,8 +122,8 @@ export function CartShower(props) {
       {/* Show Cart Items */}
       {
         items.map(i => {
-            const size = i.product.size.filter(s => s.id == i.size)[0];
-            const presentation = i.product.presentation.filter(p => p.id == i.presentation)[0];
+            const size = i.product.size.filter(s => s.id === i.size)[0];
+            const presentation = i.product.presentation.filter(p => p.id === i.presentation)[0];
             return <CartItem key={i.id}
                       {...i}
                       size={(size)?size.name:null}
@@ -155,7 +144,7 @@ export function CartShower(props) {
           <PriceItem
             key="shipping"
             text="Envío"
-            price={shipping}
+            price={shipping.cost}
             decimalPlaces={2}
             className='cart-price-item'/>
         ]

@@ -25,7 +25,6 @@ from .serializers import (
     OrderSerializer,
     OrderItemSerializer
 )
-
 from registration.serializers import ClientSerializer
 
 
@@ -149,7 +148,7 @@ class OrderViewSet(ModelViewSet):
             item_size = f', {item.product.size} ' if item.product.size else ''
             item_presentation = f', {item.product.presentation} ' if item.product.presentation else ''
             data_item += (
-                f"- {item.quantity} x {item.product.product.name}"
+                f"- {item.quantity} x {item.product.product.types.name} {item.product.product.name}"
                 f"{item_size}{item_presentation} (${item.total})\n")
         # Delivery and Intro Data
         if order.delivery_mode == DELIVERY_MODE:
@@ -160,11 +159,11 @@ class OrderViewSet(ModelViewSet):
         else:
             data_delivery = ''
             data_intro = (
-                f"Soy *{client.name.title()}* y quiero hacer el siguiente pedido para retirar por el local"
+                f"Soy *{client.name.title()}* y quiero hacer el siguiente pedido para retirar por el local "
                 f"en {place.address.address.title()}:\n")
         # Get the url
         url = (
-            f"{place.whatsapp}?text=Hola 🍕 *{place.name.title()}* 🍕!\n"
+            f"{place.whatsapp}?text=Hola 🍕*{place.name.title()}*🍕!\n"
             f"{data_intro}"
             f"{data_item}"
             f"{data_delivery}"

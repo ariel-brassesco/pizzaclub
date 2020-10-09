@@ -3,7 +3,7 @@ export const REMOVE_CART_ITEM = "REMOVE_CART_ITEM";
 export const PLUS_ONE_QUANTITY_ITEM = "PLUS_ONE_QUANTITY_ITEM";
 export const MINUS_ONE_QUANTITY_ITEM = "MINUS_ONE_QUANTITY_ITEM";
 export const EMPTY_CART = "EMPTY_CART";
-export const SET_DELIVERY = "SET_DELIVERY";
+export const SET_DELIVERY_MODE = "SET_DELIVERY_MODE";
 
 function addCartItem(item) {
   return {
@@ -39,9 +39,9 @@ function emptyCart() {
   };
 }
 
-function setDelivery(mode, shipping) {
+function setDeliveryMode(mode, shipping) {
   return {
-    type: SET_DELIVERY,
+    type: SET_DELIVERY_MODE,
     mode,
     shipping
   };
@@ -53,5 +53,5 @@ export {
   plusOneQuantityItem,
   minusOneQuantityItem,
   emptyCart,
-  setDelivery
+  setDeliveryMode
 };

@@ -7,7 +7,13 @@ import { DELIVERY_MODE} from "../constants";
 import { CustomField } from "../components/Common";
 import {http, apiRoutes} from '../services/http';
 
-export const FormCart = ({subtotal, total, shipping, mode, items, emptyCart}) => {
+export const FormCart = ({
+  shipping,
+  mode,
+  items,
+  emptyCart,
+  owner_id
+}) => {
     // Define initial fields values
     let initialFieldsValues = {
         name: '',
@@ -16,10 +22,10 @@ export const FormCart = ({subtotal, total, shipping, mode, items, emptyCart}) =>
         comment: ''
     };
     // If mode is "delivery" add address field
-    if (mode == DELIVERY_MODE) initialFieldsValues = {...initialFieldsValues, address: ''};
+    if (mode === DELIVERY_MODE) initialFieldsValues = {...initialFieldsValues, address: ''};
     // Define Required Fields
     const REQUIRED_FIELDS = ['name', 'email', 'phone'];
-    if (mode == DELIVERY_MODE) REQUIRED_FIELDS.push('address');
+    if (mode === DELIVERY_MODE) REQUIRED_FIELDS.push('address');
     // A custom validation function. This must return an object
     // which keys are symmetrical to our values/initialValues
     const validate = values => {
@@ -98,7 +104,7 @@ export const FormCart = ({subtotal, total, shipping, mode, items, emptyCart}) =>
                     required/>
                 {/* Only show address for DELIVERY */}
                 {
-                    (mode == DELIVERY_MODE)
+                    (mode === DELIVERY_MODE)
                     ?<Field
                     name="address"
                     label="Dirección"

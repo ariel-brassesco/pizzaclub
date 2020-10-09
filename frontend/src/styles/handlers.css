@@ -1,9 +1,9 @@
 .inactive {
-  display: none;
+    display: none;
 }
 
 .rotate-cc-90 {
-  display: block;
-  transform-origin: 50% 70%;
-  transform: rotate(90deg);
+    display: block;
+    transform-origin: 50% 70%;
+    transform: rotate(90deg);
 }
